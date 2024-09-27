@@ -8,10 +8,6 @@ project(DataStruct)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Setting Environment Variables
-set(MONTHLY_SALES "/home/Retr0/Code/CS499/CS300/DataStruct/data/eBid_Monthly_Sales.csv")
-set(MONTHLY_SALES_2016 "/home/Retr0/Code/CS499/CS300/DataStruct/data/eBid_Monthly_Sales_Dec_2016.csv")
-
 # Add Source Files
 set(SOURCES
     Main.cpp

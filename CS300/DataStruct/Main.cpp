@@ -18,13 +18,7 @@ std::string menu =  "Select a Datastructure\n"
                     "* exit        - 0 *\n"
                     "-------------------\n"
                     "Select a number: ";
-std::string menu2 = "Select an Algorithm\n"
-                    "-------------------\n"
-                    "* Merge Sort - 1 *\n"
-                    "* Heap Sort  - 2 *\n"
-                    "* Quick Sort - 3 *\n"
-                    "------------------\n"
-                    "Select an option: ";
+
 
 
 
@@ -56,14 +50,6 @@ int main(int argc, char* argv[]) {
         std::cin >> dataStruct;
         Utility::clearTerm();
 
-        if(dataStruct == 0) {
-            break;
-        }
-
-        std::cout << menu2;
-        std::cin >> algorithm;
-        Utility::clearTerm();
-
         switch(dataStruct) { //ADD a BACK FUNCTION????
             case 1: {
                 LinkedList list;
@@ -78,6 +64,9 @@ int main(int argc, char* argv[]) {
             case 3: {
                 BinarySearchTree tree;
                 tree.runner(csvPath);
+                break;
+            }
+            case 0: {
                 break;
             }
             default: {

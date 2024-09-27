@@ -6,6 +6,7 @@
 // Description : Lab 3-3 Lists and Searching
 //============================================================================
 
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <time.h>
@@ -109,11 +110,13 @@ void LinkedList::PrintList() {
     Node* curNode = head;
 
     // while loop over each node looking for a match
+    int i = 1;
     while(curNode != nullptr) {
         //output current bidID, title, amount and fund
-        cout << curNode->bid.bidId << ", " << curNode->bid.title << ", " << curNode->bid.amount << ", " << curNode->bid.fund << endl;
+        cout << i << ": " << curNode->bid.bidId << ", " << curNode->bid.title << ", " << curNode->bid.amount << ", " << curNode->bid.fund << endl;
         //set current equal to next
         curNode = curNode->next;
+        i++;
     }
 }
 
@@ -123,46 +126,42 @@ void LinkedList::PrintList() {
  * @param bidId The bid id to remove from the list
  */
 void LinkedList::Remove(string bidId) {
-    // special case if matching node is the head
-        if(head->bid.bidId ==  "bidId") {
-            // create temp node object
+        
+        // special case to remove head node
+        if(head->bid.bidId == bidId){
             Node* temp = head;
-            // make head point to the next node in the list
             head = head->next;
-            // now free up memory held by temp
-            delete temp;
-            //decrease size count
+            delete(temp);
             size--;
-            //return
             return;
         }
-        
+
+        // Removes nodes in the middle list
+        Node* curNode = head;
+        Node* prevNode = nullptr;
+        while (curNode != nullptr) {
+            if(curNode->bid.bidId == bidId) {
+                if(curNode->next == nullptr) {
+                    if(prevNode != nullptr) {
+                        prevNode->next = nullptr;
+                    }
+                    delete curNode;
+                } else {
+                    Node* temp = curNode;
+                    prevNode->next = curNode->next;
+                    delete temp;
+                }
+                size--;
+                return;
+            }
+            prevNode = curNode;
+            curNode = curNode->next;
+        }
+
+        return;
         
         
 
-    // start at the head
-    Node* curNode = head;
-    // while loop over each node looking for a match
-    while(curNode != nullptr){
-        // if the next node bidID is equal to the current bidID
-        if(curNode->next->bid.bidId == bidId) {
-            // hold onto the next node temporaril
-            Node* temp = curNode->next;
-            // make current node point beyond the next node
-            curNode->next = curNode->next->next;
-            // now free up memory held by temp
-            delete temp;
-            // decrease size count
-            size--;
-            //return
-            return;
-        }
-        //if not found continue to next element
-        curNode = curNode->next;
-        
-    }
-    //return
-    return;
 }
 
 
@@ -342,7 +341,7 @@ void LinkedList::runner(std::string path) {
 
 /* TO-DO */
 
-/* 1. line 351 Allow for variable bid id input
+/*
  * 2. deleting item crashes program
  * 7. main function put clock into seperate function
  * DOCUMENTATION

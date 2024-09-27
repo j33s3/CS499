@@ -40,6 +40,31 @@ namespace Utility {
         return input;
     }
 
+    int sortingSelection() {
+        int input;
+        do {
+            std::cout << "Select an Algorithm\n"
+                         "-------------------\n"
+                         "* Merge Sort - 1 *\n"
+                         "* Heap Sort  - 2 *\n"
+                         "* Quick Sort - 3 *\n"
+                         "------------------\n"
+                         "Select an option: ";
+            std::cin >> input;
+
+            if(input >=1 || input <=3) {
+                break;
+            }
+            std::cout << "Please enter a Valid Number...";
+            std::cin.get();    
+        } while (true);
+        
+        return input;
+    }
+
+
+
+
     void clearTerm() {
     #ifdef _WIN32
     system("cls");
