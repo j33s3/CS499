@@ -37,7 +37,7 @@ private:
         }
     };
 
-    vector<Node> nodes;
+    vector<Node*> nodes;
 
     unsigned int tableSize = DEFAULT_SIZE;
 

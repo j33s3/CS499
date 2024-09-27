@@ -3,12 +3,13 @@
 // Author      : John Watson
 // Version     : 1.0
 // Copyright   : Copyright © 2017 SNHU COCE
-// Description : Hello World in C++, Ansi-style
+// Description : Hello World in C++, Ansnode-style
 //============================================================================
 #include <climits>
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <unordered_set>
 
 #include "../include/HashTable.hpp"
 #include "../include/CSVparser.hpp"
@@ -88,12 +89,12 @@ void HashTable::Insert(Bid bid) {
     // Create the key for the bid by converting ascii to integer
     unsigned key = hash(atoi(bid.bidId.c_str()));
     // retrieve node using key
-    Node* node = &(nodes.at(key));
+    Node* node = (nodes.at(key));
     // if no entry found for the key
     if(node == nullptr) {
         // assign this node to the key position
         Node* newNode = new Node(bid, key);
-        nodes.at(key) = *newNode; 
+        nodes.at(key) = newNode; 
 
     }
     // else if node is not used
@@ -116,31 +117,66 @@ void HashTable::Insert(Bid bid) {
             
 }
 
+
+void HashTable::PrintAll() {
+    std::unordered_set<unsigned int> printedKeys;  // To track printed keys
+
+    // Iterate through the nodes
+    for (const auto& nodePtr : nodes) {
+        if (nodePtr != nullptr) {
+            Node* node = nodePtr;  // Dereference the pointer to get the actual Node
+            
+            // Traverse the linked list starting from the current node
+            while (node != nullptr) {
+                // Print the node's details if the key is valid
+                if (node->key != UINT_MAX) {
+                    // Print the key only if it hasn't been printed before
+                    if (printedKeys.find(node->key) == printedKeys.end()) {
+                        std::cout << "Key " << node->key << ": " << node->bid.bidId << " | " << node->bid.title << " | "
+                                  << node->bid.amount << " | " << node->bid.fund << std::endl;
+
+                        printedKeys.insert(node->key);  // Mark this key as printed
+                    } else {
+                        // For subsequent nodes with the same key, print the details without repeating the key
+                        std::cout << "\t " << node->bid.bidId << " | " << node->bid.title << " | "
+                                  << node->bid.amount << " | " << node->bid.fund << std::endl;
+                    }
+                }
+                // Move to the next node in the linked list
+                node = node->next;
+            }
+        }
+    }
+}
+
 /**
  * Print all bids
  */
-void HashTable::PrintAll() {
-    // for node begin to end iterate
-    for (auto i = nodes.begin(); i < nodes.end(); i++) {
-        //  if key not equal to UINT_MAX;
-        if(i->key != UINT_MAX) {
-            // output key, bidID, title, amount and fund
-            cout << "Key " << i->key << ": " << i->bid.bidId << " | " << i->bid.title << " | " << i->bid.amount << " | " << i->bid.fund << endl;
-        }
-        // node is equal to next item
-        Node* node = i->next;
-        // while node not equal to nullptr
-        while(node != nullptr) {
-            // output key, bidID, title, amount and fund
-            cout << "    " << i->key << ": " << i->bid.bidId << " | " << i->bid.title << " | " << i->bid.amount << " | " << i->bid.fund << endl;
-            // node is equal to next node
-            node = node->next;
-        }
-    }
+// void HashTable::PrintAll() {
+//     // for node begin to end iterate
+//     for (auto i = nodes.begin(); i < nodes.end(); i++) {
+//         if(*i != nullptr){
+//             Node* node = *i;
+//             //  if key not equal to UINT_MAX;
+//             if(node->key != UINT_MAX) {
+//                 // output key, bidID, title, amount and fund
+//                 cout << "Key " << node->key << ": " << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
+//             }
+//             // node is equal to next item
+//             Node* nextNode = node->next;
+//             // while node not equal to nullptr
+//             while(nextNode != nullptr) {
+//                 // output key, bidID, title, amount and fund
+//                 cout << "    " << node->key << ": " << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
+//                 // node is equal to next node
+//                 nextNode = nextNode->next;
+//             }
+//         }
+//     }
          
 
 
-}
+// }
 
 /**
  * Remove a bid
@@ -151,21 +187,23 @@ void HashTable::Remove(string bidId) {
     // set key equal to hash atoi bidID cstring
     unsigned key = hash(atoi(bidId.c_str()));
     //creates new node pointer to the key location
-    Node* node = &(nodes.at(key));
+    Node* node = (nodes.at(key));
 
-
-    if(key >= nodes.size()) {
-        return;
-    }
 
     //if key has data
-    if(node->key != UINT_MAX) {
+    if(node != nullptr && node->key != UINT_MAX) {
+
+        std::cout << "HEAD: " << node->bid.bidId << std::endl;
         //if first element
         if(node->bid.bidId == bidId) {
             //create temp pointer for current node
             Node* temp = node;
             //set node to next value
-            node[key] = *node->next;
+            if(node->next == nullptr) {
+                nodes[key] = new Node();
+            } else {
+                nodes[key] = node->next;
+            }
             //unallocate the memory held in temp
             delete (temp);
             return;
@@ -182,14 +220,22 @@ void HashTable::Remove(string bidId) {
             //if node's bid id is same as args
             if(node->bid.bidId == bidId) {
                 //unlink node pointer
-                prev->next = node->next;
+                if(node->next == nullptr) {
+                    prev->next = new Node();
+                } else {
+                    prev->next = node->next;
+                }
                 //unallocate memory held by node
                 delete node;
                 return;
             }
             //otherwise increment both the previous and node pointers
             prev = node;
-            node = node->next;
+            if(node->next == nullptr) {
+                return;
+            } else {
+                node = node->next;
+            }
         }
         
     }
@@ -207,7 +253,7 @@ Bid HashTable::Search(string bidId) {
     // create the key for the given bid
     unsigned key = hash(atoi(bidId.c_str()));
     // if entry found for the key
-    Node* node = &(nodes.at(key));
+    Node* node = (nodes.at(key));
     if(node != nullptr && node->bid.bidId.compare(bidId) == 0) {
          //return node bid
         return node->bid;
