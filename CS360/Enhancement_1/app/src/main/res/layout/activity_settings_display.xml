@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textSize="24dp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@android:color/transparent"
+        android:textAlignment="center">
+    </TextView>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:columnCount="2"
+        android:rowCount="5"
+        android:paddingVertical="30dp">
+
+        <!-- Theme -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Theme"
+            android:textSize="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_columnWeight="0.5"
+            android:gravity="center"
+            android:padding="8dp">
+        </TextView>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/themeSlider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1.5"
+            android:paddingRight="60dp"
+            android:thumb="@drawable/thumb"
+            app:thumbTint="@color/SliderColor"
+            app:trackTint="@color/DarkGray"
+            app:trackTintMode="multiply"
+            app:showText="true"
+            app:track="@drawable/track">
+        </androidx.appcompat.widget.SwitchCompat>
+
+        <!-- BREAK -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_columnSpan="2"
+            android:layout_columnWeight="1"
+            android:layout_margin="20dp"
+            android:background="@drawable/spacer" >
+        </TextView>
+
+        <!-- SMS enabled-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="SMS preferences"
+            android:textSize="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:padding="8dp">
+        </TextView>
+        <TextView
+            android:id="@+id/smsButton"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_columnWeight="0.5"
+            android:background="@drawable/sms_enabled_button"
+            android:text="Disabled"
+            android:textAlignment="center"
+            android:textSize="17dp"
+            android:textColor="@color/WhiteSmoke"
+            android:gravity="center"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp">
+        </TextView>
+
+
+        <!-- SMS trigger QTY-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_columnWeight="2"
+            android:text="Send SMS at amount"
+            android:backgroundTint="@android:color/transparent"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:padding="8dp">
+        </TextView>
+        <EditText
+            android:id="@+id/SMSQty"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_columnWeight="0.75"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="55dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
+            android:inputType="numberSigned"
+            android:background="@color/WhiteSmoke"
+            android:hint="Qty"
+            android:textColorHint="@color/DarkGray"
+            android:textColor="@color/Background"
+            android:textAlignment="center"
+            android:textSize="20dp">
+        </EditText>
+
+        <!-- SMS on delete-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="SMS on delete"
+            android:textAlignment="center"
+            android:backgroundTint="@android:color/transparent"
+            android:textSize="20dp">
+        </TextView>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/SMSDeleteSlider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1.5"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingRight="60dp"
+            android:thumb="@drawable/thumb"
+            app:thumbTint="@color/SliderColor"
+            app:trackTint="@color/DarkGray"
+            app:trackTintMode="multiply"
+            app:showText="true"
+            app:track="@drawable/track">
+        </androidx.appcompat.widget.SwitchCompat>
+    </GridLayout>
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:text="Done"
+        android:textSize="20dp"
+        android:textColor="@color/WhiteSmoke"
+        android:backgroundTint="@color/MediumSeaGreen">
+    </Button>
+
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="SMS Notifications"
+        android:textAlignment="center"
+        android:textSize="24sp">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="This application requires permission to send SMS notifications"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="22sp">
+    </TextView>
+    <Button
+        android:id="@+id/allowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allow"
+        android:textSize="30sp"
+        android:textColor="@color/WhiteSmoke"
+        android:backgroundTint="@color/MediumSeaGreen"
+        android:layout_marginBottom="50dp"
+        android:layout_gravity="center">
+    </Button>
+    <Button
+        android:id="@+id/denyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deny"
+        android:textSize="30dp"
+        android:textColor="@color/WhiteSmoke"
+        android:backgroundTint="@color/MediumSeaGreen"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center">
+    </Button>
+
+</LinearLayout>

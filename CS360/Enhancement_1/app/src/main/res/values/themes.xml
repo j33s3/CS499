@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.JessePeterson_Inventory" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="android:background">@color/WhiteSmoke</item>
+
+        <item name="android:navigationBarColor">@color/WhiteSmoke</item>
+        <item name="android:statusBarColor">@color/WhiteSmoke</item>
+
+        <item name="android:textColor">@color/WhiteSmoke</item>
+
+        <item name="android:imageButtonStyle">@style/CustomImageButtonStyle</item>
+
+        <item name="android:textViewStyle">@style/CustomTextViewStyle</item>
+
+        <item name="android:editTextStyle">@style/CustomEditTextStyle</item>
+
+
+
+    </style>
+
+    <!-- For text views, including buttons -->
+    <style name="CustomTextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/Background</item>
+    </style>
+
+    <!-- For text boxes -->
+    <style name="CustomEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textColorHint">@color/LightGrey</item>
+        <item name="android:textColor">@color/Background</item>
+    </style>
+
+    <!-- For Image Buttons -->
+    <style name="CustomImageButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:backgroundTint">@color/WhiteSmoke</item>
+        <item name="android:background">@color/Background</item>
+        <item name="android:tint">@color/MediumSeaGreen</item>
+    </style>
+
+
+</resources>
