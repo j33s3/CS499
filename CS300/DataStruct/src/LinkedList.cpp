@@ -6,7 +6,6 @@
 // Description : Lab 3-3 Lists and Searching
 //============================================================================
 
-#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <time.h>
@@ -342,16 +341,10 @@ void LinkedList::runner(std::string path) {
 /* TO-DO */
 
 /*
- * 2. deleting item crashes program
  * 7. main function put clock into seperate function
  * DOCUMENTATION
  * 8. Comments are too much
  * 9. Not enough comments in given code.
- * VARIABLES
- * 10. Main function argument names
- * 11. Line 290 casting to double does not use try-catch
- * LOOPS AND BRANCHES
- * 12. Main does not contain default
  * DEFENSIVE PROGRAMMING
  * 13. Desctructor does not delete head, forever contains a memory address
  */

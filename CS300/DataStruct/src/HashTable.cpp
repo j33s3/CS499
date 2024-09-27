@@ -152,39 +152,46 @@ void HashTable::Remove(string bidId) {
     unsigned key = hash(atoi(bidId.c_str()));
     //creates new node pointer to the key location
     Node* node = &(nodes.at(key));
+
+
+    if(key >= nodes.size()) {
+        return;
+    }
+
     //if key has data
     if(node->key != UINT_MAX) {
         //if first element
-        if(node->bid.bidId.compare(bidId) == 0) {
+        if(node->bid.bidId == bidId) {
             //create temp pointer for current node
             Node* temp = node;
             //set node to next value
-            node = node->next;
+            node[key] = *node->next;
             //unallocate the memory held in temp
-            delete temp;
+            delete (temp);
             return;
         } 
-        //if not first        
-        else{
-            //create previous node pointer
-            Node* prev = node;
-            //set the node pointer to the next node
-            node = node->next;
-            //while node pointer is not null
-            while(node != nullptr) {
-                //if node's bid id is same as args
-                if(node->bid.bidId.compare(bidId) == 0) {
-                    //unlink node pointer
-                    prev->next = node->next;
-                    //unallocate memory held by node
-                    delete node;
-                    return;
-                }
-                //otherwise increment both the previous and node pointers
-                prev = node;
-                node = node->next;
+        //if not first
+
+        
+        //create previous node pointer
+        Node* prev = node;
+        //set the node pointer to the next node
+        node = node->next;
+        //while node pointer is not null
+        while(node != nullptr) {
+            //if node's bid id is same as args
+            if(node->bid.bidId == bidId) {
+                //unlink node pointer
+                prev->next = node->next;
+                //unallocate memory held by node
+                delete node;
+                return;
             }
+            //otherwise increment both the previous and node pointers
+            prev = node;
+            node = node->next;
         }
+        
     }
 }
 
