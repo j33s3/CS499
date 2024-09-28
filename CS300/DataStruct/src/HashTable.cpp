@@ -524,7 +524,11 @@ void HashTable::runner(std::string path) {
             }
         case 3: {
             int selection = Utility::sortingSelection();
+            ticks = clock();
             sortAllBids(bidTable, selection);
+            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            cout << "time: " << ticks << " clock ticks" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
             break;
         }
 

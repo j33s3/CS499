@@ -448,6 +448,7 @@ void LinkedList::runner(std::string path) {
         case 3: {
             int selection = Utility::sortingSelection();
             
+            ticks = clock();
             switch(selection) {
                 case 1:
                     bidList.head = mergeSort(bidList.head);
@@ -462,8 +463,9 @@ void LinkedList::runner(std::string path) {
                     bidList.tail = getTail(bidList.head);
                     break;
             }
-            PrintList();
-            cout << "We Made IT!!!!" << endl;
+            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            cout << "time: " << ticks << " milliseconds" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
             break;
         }
         case 4: {

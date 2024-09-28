@@ -192,7 +192,7 @@ void Vector::runner(std::string path) {
         }
         case 3: {
             int selection = Utility::sortingSelection();
-
+            ticks = clock();
             switch(selection) {
                 case 1:
                     mergeSort(bids, 0, bids.size() - 1);
@@ -204,6 +204,9 @@ void Vector::runner(std::string path) {
                     quickSort(bids, 0, bids.size() - 1);
                     break;
             }
+            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            cout << "time: " << ticks << " milliseconds" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
             
             break;
         }
