@@ -15,10 +15,17 @@ std::string menu =  "Select a Datastructure\n"
                     "* Linked List - 1 *\n"
                     "* Hash Table  - 2 *\n"
                     "* BST         - 3 *\n"
+                    "* Change File - 4 *\n"
                     "* exit        - 0 *\n"
                     "-------------------\n"
                     "Select a number: ";
 
+std::string fileSelect = "Select a Data File\n"
+                         "======================\n"
+                         "Monthly Sales 2016 - 1\n"
+                         "Monthly Sales      - 2\n"
+                         "======================\n"
+                         "Select a File: ";
 
 
 
@@ -28,17 +35,11 @@ std::string menu =  "Select a Datastructure\n"
 
 
 
-int main(int argc, char* argv[]) {
+int main() {
 
     // process command line arguments
-    std::string csvPath = "../data/";
-    switch (argc) {
-    case 2:
-        csvPath.append(argv[1]);
-        break;
-    default:
-        csvPath.append("eBid_Monthly_Sales_Dec_2016.csv");
-    }
+    std::string csvPath = "../data/eBid_Monthly_Sales_Dec_2016.csv";
+
 
     int dataStruct;
     int algorithm;
@@ -65,6 +66,19 @@ int main(int argc, char* argv[]) {
                 BinarySearchTree tree;
                 tree.runner(csvPath);
                 break;
+            }
+            case 4: {
+                int selection;
+                cout << fileSelect;
+                cin >> selection;
+                switch(selection) {
+                    case 1:
+                        csvPath = "../data/eBid_Monthly_Sales_Dec_2016.csv";
+                        break;
+                    case 2:
+                        csvPath = "../data/eBid_Monthly_Sales.csv";
+                        break;
+                }
             }
             case 0: {
                 break;

@@ -452,20 +452,14 @@ void LinkedList::runner(std::string path) {
                 case 1:
                     bidList.head = mergeSort(bidList.head);
                     bidList.tail = getTail(bidList.tail);
-                    // cout << "HEAD: " << (head == nullptr) << " TAIL: " << (tail == nullptr) << endl;  
-                    // cout << "HEAD: " << head->bid.bidId << " TAIL: " << tail->bid.bidId << endl;                   
                     break;
                 case 2:
                     bidList.head = heapSort(bidList.head, bidList.Size());
                     bidList.tail = getTail(bidList.head);
-                    // cout << "HEAD: " << (head == nullptr) << " TAIL: " << (tail == nullptr) << endl;
-                    // cout << "HEAD: " << head->bid.bidId << " TAIL: " << tail->bid.bidId << endl;                    
                     break;
                 case 3:
                     bidList.head = quickSort(bidList.head, bidList.tail);
                     bidList.tail = getTail(bidList.head);
-                    // cout << "HEAD: " << (head == nullptr) << " TAIL: " << (tail == nullptr) << endl;
-                    // cout << "HEAD: " << head->bid.bidId << " TAIL: " << tail->bid.bidId << endl;
                     break;
             }
             PrintList();

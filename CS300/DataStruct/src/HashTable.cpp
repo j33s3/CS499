@@ -10,6 +10,8 @@
 #include <string>
 #include <time.h>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 #include "../include/HashTable.hpp"
 #include "../include/CSVparser.hpp"
@@ -146,6 +148,153 @@ void HashTable::PrintAll() {
                 node = node->next;
             }
         }
+    }
+}
+
+
+//============================================================================
+// Merge-Sort Functions
+//============================================================================
+void HashTable::merge(Node** array, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    Node** leftArray = new Node*[n1];
+    Node** rightArray = new Node*[n2];
+
+    for (int i = 0; i < n1; i++) {
+        leftArray[i] = array[left + i];
+    }
+    for (int j = 0; j < n2; j++) {
+        rightArray[j] = array[mid + 1 + j];
+    }
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if(leftArray[i]->bid.bidId < rightArray[j]->bid.bidId) {
+            array[k++] = leftArray[i++];
+        } else {
+            array[k++] = rightArray[j++];
+        }
+    }
+
+    while (i < n1) {
+        array[k++] = leftArray[i++];
+    }
+
+    while (j < n2) {
+        array[k++] = rightArray[j++];
+    }
+
+    delete[] leftArray;
+    delete[] rightArray;
+
+}
+
+void HashTable::mergeSort(Node** array, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSort(array, left, mid);
+        mergeSort(array, mid + 1, right);
+        merge(array, left, mid, right);
+    }
+}
+//============================================================================
+// Heap-Sort Functions
+//============================================================================
+
+void HashTable::heapify(Node** array, int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if(left < n && array[left]->bid.bidId > array[largest]->bid.bidId) {
+        largest = left;
+    }
+    
+    if(right < n && array[right]->bid.bidId > array[largest]->bid.bidId) {
+        largest = right;
+    }
+
+    if (largest != i) {
+        swap(array[i], array[largest]);
+        heapify(array, n, largest);
+    }
+}
+
+void HashTable::heapSort(Node** array, int n) {
+    for(int i = n/2 - 1; i >= 0; i--) {
+        heapify(array, n, i);
+    }
+
+    for(int i = n - 1; i > 0; i--) {
+        swap(array[0], array[i]);
+        heapify(array, i, 0);
+    }
+
+}
+//============================================================================
+// Quick-Sort Functions
+//============================================================================
+int HashTable::partition(Node** array, int low, int high) {
+    Bid pivot = array[high]->bid;
+    int i = (low - 1);
+
+    for(int j = low; j < high; j++) {
+        if(array[j]->bid.bidId < pivot.bidId) {
+            i++;
+            swap(array[i], array[j]);
+        }
+    }
+    swap(array[i + 1], array[high]);
+    return (i + 1);
+}
+
+void HashTable::quickSort(Node** array, int low, int high) {
+    if (low < high) {
+        int pi = partition(array, low, high);
+        quickSort(array, low, pi - 1);
+        quickSort(array, pi + 1, high);
+    }
+}
+
+//============================================================================
+// Sorting Runner
+//============================================================================
+void HashTable::sortAllBids(HashTable* bidTable, int selection) {
+    for(auto& nodePtr : bidTable->nodes) {
+        if(nodePtr != nullptr) {
+            std::vector<Node*> nodeList;
+            Node* node = nodePtr;
+
+
+
+            while(node != nullptr) {
+                nodeList.push_back(node);
+                node = node->next;
+            }
+
+            switch(selection) {
+                case 1:
+                    mergeSort(nodeList.data(), 0, nodeList.size() - 1);
+                    break;
+                case 2:
+                    heapSort(nodeList.data(), nodeList.size());
+                    break;
+                case 3:
+                    quickSort(nodeList.data(), 0, nodeList.size() - 1);
+                    break;
+            }
+
+            for(size_t i = 0; i < nodeList.size() - 1; i++) {
+                nodeList[i]->next = nodeList[i + 1];
+            }
+            nodeList.back()->next = nullptr;
+            bidTable->nodes[hash(atoi(nodeList[0]->bid.bidId.c_str()))] = nodeList[0];
+        }
+
+
     }
 }
 
@@ -373,8 +522,13 @@ void HashTable::runner(std::string path) {
             bidTable->PrintAll();
             break;
             }
-
         case 3: {
+            int selection = Utility::sortingSelection();
+            sortAllBids(bidTable, selection);
+            break;
+        }
+
+        case 4: {
 
             std::string bidKey;
             cout << "Enter Bid Key: ";
@@ -396,14 +550,14 @@ void HashTable::runner(std::string path) {
             cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
             break;
             }
-        case 4:
+        case 5:
             std::string bidKey;
             cout << "Enter Bid Key: ";
             std::cin >> bidKey;
             bidTable->Remove(bidKey);
             break;
         }
-    } while (choice != 9);
+    } while (choice != 0);
 
     cout << "Good bye." << endl;
 

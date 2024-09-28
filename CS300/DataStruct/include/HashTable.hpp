@@ -52,6 +52,18 @@ public:
     Bid Search(string bidId);
     void loadBids(string csvPath, HashTable* hashTable);
 
+    void merge(Node** array, int left, int mid, int right);
+    void mergeSort(Node** array, int left, int right);
+
+    int partition(Node** array, int low, int high);
+    void quickSort(Node** array, int low, int high);
+
+    void heapify(Node** array, int n, int i);
+    void heapSort(Node** array, int n);
+
+    void sortAllBids(HashTable* bidTable, int selection);
+
+
     void runner(string path);
 };
 
