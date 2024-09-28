@@ -5,6 +5,7 @@
 #include "include/LinkedList.hpp"
 #include "include/HashTable.hpp"
 #include "include/BinarySearchTree.hpp"
+#include "include/Vector.hpp"
 
 #include "include/Utility.hpp"
 
@@ -12,10 +13,11 @@
 
 std::string menu =  "Select a Datastructure\n"
                     "----------------------\n"
-                    "* Linked List - 1 *\n"
-                    "* Hash Table  - 2 *\n"
-                    "* BST         - 3 *\n"
-                    "* Change File - 4 *\n"
+                    "* Change File - 1 *\n"
+                    "* Vector      - 2 *\n"
+                    "* Linked List - 3 *\n"
+                    "* Hash Table  - 4 *\n"
+                    "* BST         - 5 *\n"
                     "* exit        - 0 *\n"
                     "-------------------\n"
                     "Select a number: ";
@@ -53,21 +55,6 @@ int main() {
 
         switch(dataStruct) { //ADD a BACK FUNCTION????
             case 1: {
-                LinkedList list;
-                list.runner(csvPath);
-                break;
-            }
-            case 2: {
-                HashTable table;
-                table.runner(csvPath);
-                break;
-            }
-            case 3: {
-                BinarySearchTree tree;
-                tree.runner(csvPath);
-                break;
-            }
-            case 4: {
                 int selection;
                 cout << fileSelect;
                 cin >> selection;
@@ -79,6 +66,26 @@ int main() {
                         csvPath = "../data/eBid_Monthly_Sales.csv";
                         break;
                 }
+            }
+            case 2: {
+                Vector vec;
+                vec.runner(csvPath);
+                break;
+            }
+            case 3: {
+                LinkedList list;
+                list.runner(csvPath);
+                break;
+            }
+            case 4: {
+                HashTable table;
+                table.runner(csvPath);
+                break;
+            }
+            case 5: {
+                BinarySearchTree tree;
+                tree.runner(csvPath);
+                break;
             }
             case 0: {
                 break;
