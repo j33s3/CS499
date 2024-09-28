@@ -21,7 +21,6 @@ using namespace std;
 
 
 
-
 //============================================================================
 // Binary Search Tree class definition
 //============================================================================
@@ -442,7 +441,7 @@ void BinarySearchTree::runner(std::string path) {
             bst->Remove(bidKey);
             break;
         }
-    } while (choice != 9);
+    } while (choice != 0);
 
     std::cout << "Good bye." << endl;
 }

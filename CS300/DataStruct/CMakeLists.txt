@@ -14,6 +14,7 @@ set(SOURCES
     src/LinkedList.cpp
     src/HashTable.cpp
     src/BinarySearchTree.cpp
+    src/Vector.cpp
     src/CSVparser.cpp
     src/Utility.cpp
 )
