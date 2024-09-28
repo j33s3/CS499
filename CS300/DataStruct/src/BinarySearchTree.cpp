@@ -356,7 +356,6 @@ void BinarySearchTree::loadBids(string csvPath, BinarySearchTree* bst) {
             bid.fund = file[i][8];
             bid.amount = Utility::strToDouble(file[i][4], '$');
 
-            //cout << "Item: " << bid.title << ", Fund: " << bid.fund << ", Amount: " << bid.amount << endl;
 
             // push this bid to the end
             bst->Insert(bid);
@@ -401,7 +400,6 @@ void BinarySearchTree::runner(std::string path) {
 
             // Complete the method call to load the bids
             loadBids(path, bst);
-            //cout << bst->Size() << " bids read" << endl;
 
             // Calculate elapsed time and display result
             ticks = clock() - ticks; // current clock ticks minus starting clock ticks
@@ -453,17 +451,7 @@ void BinarySearchTree::runner(std::string path) {
 /* TO-DO */
 
 /*
-* 1. remove fix me's
-* 2. line 430 remove the print statment
-* 3. could seperate class into header
-* 4. seperate argument paser into seperate function
-* 5. seperate menu list into other function. or variable
 * DOCUMENTATION
 * 6. Excessive commenting
 * 7. not enough commenting in given code.
-* VARIABLES
-* 8. lines 507 and 528 trying to cast an uint to double
-* LOOPS AND BRANCHES
-* 9. Lines 243 and 236 should be places before double pointer
-* 10. no default case on menu selection
 */

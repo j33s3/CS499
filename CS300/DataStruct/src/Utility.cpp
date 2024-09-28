@@ -22,15 +22,16 @@ namespace Utility {
             cout << "Please select an option:\n"
                     "------------------------\n"
                     "* Load Bids        - 1 *\n"
-                    "* Display All Bids - 2 *\n" //ADD SORT AFTER THIS
-                    "* Find Bid         - 3 *\n"
-                    "* Remove Bid       - 4 *\n"
-                    "* Exit             - 9 *\n"
+                    "* Display All Bids - 2 *\n"
+                    "* Sort Data        - 3 *\n"
+                    "* Find Bid         - 4 *\n"
+                    "* Remove Bid       - 5 *\n"
+                    "* Exit             - 0 *\n"
                     "------------------------\n"
                     "Enter a number: ";
             std::cin >> input;
 
-            if(input == 9 || (input >= 1 || input <= 4)) {
+            if(input >= 0 && input <= 5) {
                 break;
             }
             std::cout << "Please enter a Valid Number...";
@@ -58,7 +59,7 @@ namespace Utility {
             std::cout << "Please enter a Valid Number...";
             std::cin.get();    
         } while (true);
-        
+
         return input;
     }
 

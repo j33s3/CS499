@@ -413,16 +413,7 @@ void HashTable::runner(std::string path) {
 /* TO-DO */
 
 /*
-* 1. Fix remove item
 * 4. seperates the clock from main function
-* 5. seperate the argument parser from main function
-* 6. seperate the menu from parser
-* DOCUMENTATION
-* VARIABLES
-* 9. warnings of casting uint to int Line 133
-* 10. Lines 414 and 435 converting uint to double
-* LOOPS and BRANCHES
-* 11. No default on a case statement but will
 * DEFENSIVE PROGRAMMING
 * 12. desctructor only removes head
 */
