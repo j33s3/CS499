@@ -17,25 +17,6 @@
 #include "../include/CSVparser.hpp"
 #include "../include/Utility.hpp"
 
-using namespace std;
-
-//============================================================================
-// Global definitions visible to all methods and classes
-//============================================================================
-
-
-// forward declarations
-double strToDouble(string str, char ch);
-
-
-//============================================================================
-// Hash Table class definition
-//============================================================================
-
-/**
- * Define a class containing data members and methods to
- * implement a hash table with chaining.
- */
 
 /**
  * Default constructor
@@ -51,9 +32,7 @@ HashTable::HashTable() {
  * by reducing collisions without wasting memory.
  */
 HashTable::HashTable(unsigned int size) {
-    // assigns the tablesize to the argument value
     this->tableSize = size;
-    // Resizes the vector length
     nodes.resize(size);
 }
 
@@ -62,7 +41,6 @@ HashTable::HashTable(unsigned int size) {
  * Destructor
  */
 HashTable::~HashTable() {
-    // erase nodes beginning
     nodes.erase(nodes.begin());
 
 }
@@ -77,7 +55,6 @@ HashTable::~HashTable() {
  * @return The calculated hash
  */
 unsigned int HashTable::hash(int key) {
-    // return key tableSize
     return key % tableSize;
 }
 
@@ -88,10 +65,11 @@ unsigned int HashTable::hash(int key) {
  */
 void HashTable::Insert(Bid bid) {
 
-    // Create the key for the bid by converting ascii to integer
+    //Hash a key for entry
     unsigned key = hash(atoi(bid.bidId.c_str()));
-    // retrieve node using key
+    //Retrieve the index node
     Node* node = (nodes.at(key));
+
     // if no entry found for the key
     if(node == nullptr) {
         // assign this node to the key position
@@ -99,6 +77,7 @@ void HashTable::Insert(Bid bid) {
         nodes.at(key) = newNode; 
 
     }
+
     // else if node is not used
     else if(node->key == UINT_MAX) {
         // assing old node key to key, set old bid to bid and old node next to null pointer
@@ -126,7 +105,7 @@ void HashTable::PrintAll() {
     // Iterate through the nodes
     for (const auto& nodePtr : nodes) {
         if (nodePtr != nullptr) {
-            Node* node = nodePtr;  // Dereference the pointer to get the actual Node
+            Node* node = nodePtr;
             
             // Traverse the linked list starting from the current node
             while (node != nullptr) {
@@ -144,7 +123,6 @@ void HashTable::PrintAll() {
                                   << node->bid.amount << " | " << node->bid.fund << std::endl;
                     }
                 }
-                // Move to the next node in the linked list
                 node = node->next;
             }
         }
@@ -297,31 +275,6 @@ void HashTable::sortAllBids(HashTable* bidTable, int selection) {
 
     }
 }
-
-/**
- * Print all bids
- */
-// void HashTable::PrintAll() {
-//     // for node begin to end iterate
-//     for (auto i = nodes.begin(); i < nodes.end(); i++) {
-//         if(*i != nullptr){
-//             Node* node = *i;
-//             //  if key not equal to UINT_MAX;
-//             if(node->key != UINT_MAX) {
-//                 // output key, bidID, title, amount and fund
-//                 cout << "Key " << node->key << ": " << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
-//             }
-//             // node is equal to next item
-//             Node* nextNode = node->next;
-//             // while node not equal to nullptr
-//             while(nextNode != nullptr) {
-//                 // output key, bidID, title, amount and fund
-//                 cout << "    " << node->key << ": " << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
-//                 // node is equal to next node
-//                 nextNode = nextNode->next;
-//             }
-//         }
-//     }
          
 
 
@@ -333,40 +286,38 @@ void HashTable::sortAllBids(HashTable* bidTable, int selection) {
  * @param bidId The bid id to search for
  */
 void HashTable::Remove(string bidId) {
-    // set key equal to hash atoi bidID cstring
+    // Hash the input number
     unsigned key = hash(atoi(bidId.c_str()));
-    //creates new node pointer to the key location
+    // Retrieve the index node
     Node* node = (nodes.at(key));
 
 
     //if key has data
     if(node != nullptr && node->key != UINT_MAX) {
 
-        std::cout << "HEAD: " << node->bid.bidId << std::endl;
         //if first element
         if(node->bid.bidId == bidId) {
-            //create temp pointer for current node
             Node* temp = node;
+
             //set node to next value
             if(node->next == nullptr) {
                 nodes[key] = new Node();
             } else {
                 nodes[key] = node->next;
             }
-            //unallocate the memory held in temp
+
             delete (temp);
             return;
         } 
-        //if not first
 
-        
-        //create previous node pointer
+
+        //if not first
         Node* prev = node;
-        //set the node pointer to the next node
         node = node->next;
+
         //while node pointer is not null
         while(node != nullptr) {
-            //if node's bid id is same as args
+            // If found match
             if(node->bid.bidId == bidId) {
                 //unlink node pointer
                 if(node->next == nullptr) {
@@ -397,50 +348,29 @@ void HashTable::Remove(string bidId) {
  */
 Bid HashTable::Search(string bidId) {
     Bid bid;
-
-
     // create the key for the given bid
     unsigned key = hash(atoi(bidId.c_str()));
-    // if entry found for the key
     Node* node = (nodes.at(key));
+
+    // if entry found for the key
     if(node != nullptr && node->bid.bidId.compare(bidId) == 0) {
-         //return node bid
+
         return node->bid;
     }
     // if no entry found for the key
     if(node == nullptr || node->key == UINT_MAX) {
-      // return bid
         return bid;
     }
     //while a node exists
     while(node != nullptr) {
         //if the bidId equals args
         if(node->bid.bidId.compare(bidId) == 0) {
-            //return the node
             return node->bid;
         }
-        //else iterate through list
         node = node->next;
     }
-
-
-
-    // while node not equal to nullptr
-        // if the current node matches, return it
-        //node is equal to next node
-
     return bid;
 }
-
-//============================================================================
-// Static methods used for testing
-//============================================================================
-
-/**
- * Display the bid information to the console (std::out)
- *
- * @param bid struct containing the bid info
- */
 
 /**
  * Load a CSV file containing bids into a container
@@ -449,7 +379,7 @@ Bid HashTable::Search(string bidId) {
  * @return a container holding all the bids read
  */
 void HashTable::loadBids(string csvPath, HashTable* hashTable) {
-    cout << "Loading CSV file " << csvPath << endl;
+    std::cout << "Loading CSV file " << csvPath << endl;
 
     // initialize the CSV Parser using the given path
     csv::Parser file = csv::Parser(csvPath);
@@ -457,9 +387,9 @@ void HashTable::loadBids(string csvPath, HashTable* hashTable) {
     // read and display header row - optional
     vector<string> header = file.getHeader();
     for (auto const& c : header) {
-        cout << c << " | ";
+        std::cout << c << " | ";
     }
-    cout << "" << endl;
+    std::cout << "" << endl;
 
     try {
         // loop to read rows of a CSV file
@@ -482,96 +412,95 @@ void HashTable::loadBids(string csvPath, HashTable* hashTable) {
 }
 
 
-/**
- * The one and only main() method
- */
 void HashTable::runner(std::string path) {
 
-    // Define a timer variable
+    //Declare variables
     clock_t ticks;
-
-    // Define a hash table to hold all the bids
     HashTable* bidTable;
-
     Bid bid;
+    int choice;
+
     bidTable = new HashTable();
     
-    int choice;
     do {
+        //Ask for use input
         choice = Utility::menuSelection();
+        Utility::clearTerm();
 
         switch (choice) {
-
+        //Load bids
         case 1:{
             
-            // Initialize a timer variable before loading bids
+            // Initialize a timer
             ticks = clock();
 
-            // Complete the method call to load the bids
             loadBids(path, bidTable);
 
-            // Calculate elapsed time and display result
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            // Calculate elapsed time 
+            ticks = clock() - ticks; 
+            std::cout << "time: " << ticks << " clock ticks" << endl;
+            std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
             cin.get();
             
             break;
             }
+        //Print All
         case 2: {
             bidTable->PrintAll();
             break;
             }
+        //Sort
         case 3: {
+            //Ask to select an Algorithm
             int selection = Utility::sortingSelection();
+            Utility::clearTerm();
+
+            // Initialize a timer
             ticks = clock();
             sortAllBids(bidTable, selection);
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+            // Calculate elapsed time 
+            ticks = clock() - ticks;
+            std::cout << "time: " << ticks << " clock ticks" << endl;
+            std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
             break;
         }
-
+        //Find Bid
         case 4: {
-
+            //Ask the user for a BidId
             std::string bidKey;
-            cout << "Enter Bid Key: ";
+            std::cout << "Enter Bid Key: ";
             std::cin >> bidKey;
 
+            // Initialize a timer
             ticks = clock();
 
             bid = bidTable->Search(bidKey);
 
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-
+            // Print the bid
             if (!bid.bidId.empty()) {
                 Utility::displayBid(bid);
             } else {
-                cout << "Bid Id " << bidKey << " not found." << endl;
+                std::cout << "Bid Id " << bidKey << " not found." << endl;
             }
 
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            // Calculate elapsed time 
+            ticks = clock() - ticks;
+            std::cout << "time: " << ticks << " clock ticks" << endl;
+            std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
             break;
             }
+        //Remove Bid
         case 5:
+            //Ask the user for BidId
             std::string bidKey;
-            cout << "Enter Bid Key: ";
+            std::cout << "Enter Bid Key: ";
             std::cin >> bidKey;
+
             bidTable->Remove(bidKey);
             break;
         }
+        
     } while (choice != 0);
 
-    cout << "Good bye." << endl;
-
 }
-
-
-/* TO-DO */
-
-/*
-* 4. seperates the clock from main function
-* DEFENSIVE PROGRAMMING
-* 12. desctructor only removes head
-*/

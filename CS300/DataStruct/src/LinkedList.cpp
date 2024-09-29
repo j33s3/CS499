@@ -14,24 +14,6 @@
 #include "../include/CSVparser.hpp"
 #include "../include/Utility.hpp"
 
-using namespace std;
-//============================================================================
-// Global definitions visible to all methods and classes
-//============================================================================
-
-// define a structure to hold bid information
-
-
-//============================================================================
-// Linked-List class definition
-//============================================================================
-
-/**
- * Define a class containing data members and methods to
- * implement a linked-list.
- */
-
-
 /**
  * Default constructor
  */
@@ -51,9 +33,9 @@ LinkedList::~LinkedList() {
 
     // loop over each node, detach from list then delete
     while (current != nullptr) {
-        temp = current; // hang on to current node
-        current = current->next; // make current the next node
-        delete temp; // delete the orphan node
+        temp = current; 
+        current = current->next;
+        delete temp;
     }
 }
 
@@ -225,21 +207,20 @@ LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
         return cur;
     }
 
+//============================================================================
+// LinkedList Base Functions
+//============================================================================
 
 /**
  * Simple output of all bids in the list
  */
 void LinkedList::PrintList() {
-
-    // start at the head
     Node* curNode = head;
 
-    // while loop over each node looking for a match
     int i = 1;
+    //Iterate through the List and print details
     while(curNode != nullptr) {
-        //output current bidID, title, amount and fund
-        cout << i << ": " << curNode->bid.bidId << ", " << curNode->bid.title << ", " << curNode->bid.amount << ", " << curNode->bid.fund << endl;
-        //set current equal to next
+        std::cout << i << ": " << curNode->bid.bidId << ", " << curNode->bid.title << ", " << curNode->bid.amount << ", " << curNode->bid.fund << endl;
         curNode = curNode->next;
         i++;
     }
@@ -254,6 +235,8 @@ void LinkedList::Remove(string bidId) {
         
         // special case to remove head node
         if(head->bid.bidId == bidId){
+            //Store the node in temp
+            //Then set the head to the next node before deleting the unused pointer.
             Node* temp = head;
             head = head->next;
             delete(temp);
@@ -264,13 +247,18 @@ void LinkedList::Remove(string bidId) {
         // Removes nodes in the middle list
         Node* curNode = head;
         Node* prevNode = nullptr;
+        //Iterate till reaching the end of list
         while (curNode != nullptr) {
+            // Set the previous node to point to the node after target
+            // Then delete the target
             if(curNode->bid.bidId == bidId) {
+                //if the end of the list
                 if(curNode->next == nullptr) {
                     if(prevNode != nullptr) {
                         prevNode->next = nullptr;
                     }
                     delete curNode;
+                //if between the list
                 } else {
                     Node* temp = curNode;
                     prevNode->next = curNode->next;
@@ -279,6 +267,7 @@ void LinkedList::Remove(string bidId) {
                 size--;
                 return;
             }
+            //iterate
             prevNode = curNode;
             curNode = curNode->next;
         }
@@ -296,17 +285,13 @@ void LinkedList::Remove(string bidId) {
  * @param bidId The bid id to search for
  */
 Bid LinkedList::Search(string bidId) {
-
-    //sets the default bid
     Bid bid;
-
-    // start at the head of the list
     Node* curNode = head;
-    // keep searching until end reached with while loop (next != nullptr
+
+    // keep searching until end
     while(curNode != nullptr) {
         // if the current node matches, return it
         if(curNode->bid.bidId == bidId) {
-            //return bid
             bid = curNode->bid;
             return bid;
         }
@@ -314,13 +299,10 @@ Bid LinkedList::Search(string bidId) {
             curNode = curNode->next;
         
     }
-    //return empty bid
     return bid;
  
      
 }
-
-
 
 /**
  * Returns the current size (number of elements) in the list
@@ -329,45 +311,13 @@ int LinkedList::Size() {
     return size;
 }
 
-//============================================================================
-// Static methods used for testing
-//============================================================================
-
-
-/**
- * Prompt user for bid information
- *
- * @return Bid struct containing the bid info
- */
-Bid getBid() {
-    Bid bid;
-
-    cout << "Enter Id: ";
-    cin.ignore();
-    getline(cin, bid.bidId);
-
-    cout << "Enter title: ";
-    getline(cin, bid.title);
-
-    cout << "Enter fund: ";
-    cin >> bid.fund;
-
-    cout << "Enter amount: ";
-    cin.ignore();
-    string strAmount;
-    getline(cin, strAmount);
-    bid.amount = Utility::strToDouble(strAmount, '$');
-
-    return bid;
-}
-
 /**
  * Load a CSV file containing bids into a LinkedList
  *
  * @return a LinkedList containing all the bids read
  */
 void LinkedList::loadBids(string csvPath, LinkedList *list) {
-    cout << "Loading CSV file " << csvPath << endl;
+    std::cout << "Loading CSV file " << csvPath << endl;
 
     // initialize the CSV Parser
     csv::Parser file = csv::Parser(csvPath);
@@ -383,8 +333,6 @@ void LinkedList::loadBids(string csvPath, LinkedList *list) {
             bid.fund = file[i][8];
             bid.amount = Utility::strToDouble(file[i][4], '$');
 
-            //cout << bid.bidId << ": " << bid.title << " | " << bid.fund << " | " << bid.amount << endl;
-
             // add this bid to the end
             list->Append(bid);
         }
@@ -393,127 +341,142 @@ void LinkedList::loadBids(string csvPath, LinkedList *list) {
     }
 }
 
-
+/**
+ * Appends a bid the end of the LinkedList
+ * @param Bid bid
+ */
 void LinkedList::Append(Bid bid) {
-    //Create new node
     Node* newNode = new Node(bid);
+
     //if there is nothing at the head...
     if(head == nullptr) {
         // new node becomes the head and the tail
         head = newNode;
         tail = newNode;
-    } else { //else 
+    } else { 
         // make current tail node point to the new node
         tail->next = newNode;
             // and tail becomes the new node
         tail = newNode;
     }
-    //increase size count
+
     size++;
 }
 
+
+/**
+ * This is the runner function for the LinkedList class
+ * It manages user input/selection.
+ * Also tests time complexities.
+ * @param Strin File Path
+ */
 void LinkedList::runner(std::string path) {
-
-    // process command line arguments
+    // Variable Declaration
     clock_t ticks;
-
     LinkedList bidList;
-
     Bid bid;
-
     int choice;
 
     do {
         choice = Utility::menuSelection();
+        Utility::clearTerm();
 
         switch (choice) {
+        //Load Bids
         case 1: {
+            //Initalizes the clock
             ticks = clock();
 
             loadBids(path, &bidList);
 
-            cout << bidList.Size() << " bids read" << endl;
 
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " milliseconds" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            std::cout << bidList.Size() << " bids read" << endl;
+
+            //Save Time Complexity
+            ticks = clock() - ticks;
+            std::cout << "time: " << ticks << " milliseconds" << endl;
+            std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
 
             break;
             }
+        //Print All
         case 2: {
             bidList.PrintList();
 
             break;
         }
+        //Sort
         case 3: {
+            //Ask the user to select an Algorithm
             int selection = Utility::sortingSelection();
-            
+            Utility::clearTerm();
+
+            //Initalizes the clock
             ticks = clock();
+
             switch(selection) {
+                //Merge Sort
                 case 1:
                     bidList.head = mergeSort(bidList.head);
                     bidList.tail = getTail(bidList.tail);
                     break;
+                //Heap Sort
                 case 2:
                     bidList.head = heapSort(bidList.head, bidList.Size());
                     bidList.tail = getTail(bidList.head);
                     break;
+                //Quick Sort
                 case 3:
                     bidList.head = quickSort(bidList.head, bidList.tail);
                     bidList.tail = getTail(bidList.head);
                     break;
             }
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-            cout << "time: " << ticks << " milliseconds" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+
+            //Save Time Complexity
+            ticks = clock() - ticks;
+            std::cout << "time: " << ticks << " milliseconds" << endl;
+            std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
+
             break;
         }
+        //Find Bid
         case 4: {
+            //Ask user for BidId
             std::string bidKey;
-            cout << "Enter Bid Key: ";
+            std::cout << "Enter Bid Key: ";
             std::cin >> bidKey;
 
+            //Initalizes the clock
             ticks = clock();
 
             bid = bidList.Search(bidKey);
+            
 
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-
+            // Print bid
             if (!bid.bidId.empty()) {
                 Utility::displayBid(bid);
             } else {
-            	cout << "Bid Id " << bidKey << " not found." << endl;
+            	std::cout << "Bid Id " << bidKey << " not found." << endl;
             }
 
-            cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            //Save Time Complexity
+            ticks = clock() - ticks;
+            std::cout << "time: " << ticks << " clock ticks" << endl;
+            std::cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
 
             break;
             }
+        //Remove Bid
         case 5:
+            //Ask user for BidId
             std::string bidKey;
-            cout << "Enter Bid Key: ";
+            std::cout << "Enter Bid Key: ";
             std::cin >> bidKey;
+
             bidList.Remove(bidKey);
 
             break;
         }
 
-    
     } while (choice != 0);
-
-
-    cout << "Good bye." << endl;
 }
-
-
-/* TO-DO */
-
-/*
- * 7. main function put clock into seperate function
- * DOCUMENTATION
- * 8. Comments are too much
- * 9. Not enough comments in given code.
- * DEFENSIVE PROGRAMMING
- * 13. Desctructor does not delete head, forever contains a memory address
- */

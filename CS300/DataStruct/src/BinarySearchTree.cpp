@@ -13,22 +13,6 @@
 #include "../include/CSVparser.hpp"
 #include "../include/Utility.hpp"
 
-using namespace std;
-
-//============================================================================
-// Global definitions visible to all methods and classes
-//============================================================================
-
-
-
-//============================================================================
-// Binary Search Tree class definition
-//============================================================================
-
-/**
- * Define a class containing data members and methods to
- * implement a binary search tree
- */
 /**
  * Default constructor
  */
@@ -40,7 +24,6 @@ BinarySearchTree::BinarySearchTree() {
  * Destructor
  */
 BinarySearchTree::~BinarySearchTree() {
-    // recurse from root deleting every node
     deleteAll(root);
 }
 
@@ -90,14 +73,12 @@ void BinarySearchTree::PreOrder() {
  */
 void BinarySearchTree::Insert(Bid bid) {
 
-    // if root equarl to null ptr
+    // if root equal to null ptr
     if(root == nullptr) {
-        // root is equal to new node bid
         root = new Node(bid);
     }
     //if root is occupied
     else{ 
-        //create new node pointer
         Node* curNode = root;
 
         while (curNode != nullptr) {
@@ -165,22 +146,22 @@ BinarySearchTree::Node* BinarySearchTree::RemoveNode(Node* node, string bidId) {
 
         // Node with no children
         if (node->left == nullptr && node->right == nullptr) {
-            delete node; // Delete node
+            delete node;
             node = nullptr;
         }
 
         // Node with only left child
         else if (node->left != nullptr && node->right == nullptr) {
-            Node* temp = node; // Temporary node to be deleted
-            node = node->left; // Replace node with its left child
-            delete temp; // Delete temporary node
+            Node* temp = node;
+            node = node->left;
+            delete temp;
         }
 
         // Node with only right child
         else if (node->right != nullptr && node->left == nullptr) {
-            Node* temp = node; // Temporary node to be deleted
-            node = node->right; // Replace node with its right child
-            delete temp; // Delete temporary node
+            Node* temp = node;
+            node = node->right;
+            delete temp;
         }
 
         // Node with two children
@@ -207,8 +188,8 @@ BinarySearchTree::Node* BinarySearchTree::RemoveNode(Node* node, string bidId) {
  * @return bid that searched for
  */
 Bid BinarySearchTree::Search(string bidId) {
-    // set current node equal to root
     Node* curNode = root;
+
     // keep looping downwards until bottom reached or matching bidId found
     while (curNode != nullptr){
         // if match found, return current bid
@@ -248,14 +229,12 @@ void BinarySearchTree::addNode(Node* node, Bid bid) {
             addNode(node->left, bid);
         }
     }
-    // else
     else{
         // if no right node
         if(node->right == nullptr){
         // this node becomes right
             node->right = new Node(bid);
         }
-        //else
         else {
         // recurse down the left node
             addNode(node->right, bid);
@@ -271,11 +250,8 @@ void BinarySearchTree::addNode(Node* node, Bid bid) {
 void BinarySearchTree::inOrder(Node* node) {
       //if node is not equal to null ptr
       if(node != nullptr) {
-        //inOrder not left
         inOrder(node->left);
-        //output bidID, title, amount, fund
         cout << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
-        //InOder right
         inOrder(node->right);
       }
 }
@@ -288,11 +264,8 @@ void BinarySearchTree::inOrder(Node* node) {
 void BinarySearchTree::postOrder(Node* node) {
       //if node is not equal to null ptr
     if(node != nullptr){
-      //postOrder left
       postOrder(node->left);
-      //postOrder right
       postOrder(node->right);
-      //output bidID, title, amount, fund
       cout << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
     }
 }
@@ -305,24 +278,11 @@ void BinarySearchTree::postOrder(Node* node) {
 void BinarySearchTree::preOrder(Node* node) {
       //if node is not equal to null ptr
     if(node != nullptr) {
-      //output bidID, title, amount, fund
     cout << node->bid.bidId << " | " << node->bid.title << " | " << node->bid.amount << " | " << node->bid.fund << endl;
-      //postOrder left
       preOrder(node->left);
-      //postOrder right  
       preOrder(node->right);
     }    
 }
-
-//============================================================================
-// Static methods used for testing
-//============================================================================
-
-/**
- * Display the bid information to the console (std::out)
- *
- * @param bid struct containing the bid info
- */
 
 
 /**
@@ -365,92 +325,82 @@ void BinarySearchTree::loadBids(string csvPath, BinarySearchTree* bst) {
 }
 
 /**
- * Simple C function to convert a string to a double
- * after stripping out unwanted char
- *
- * credit: http://stackoverflow.com/a/24875936
- *
- * @param ch The character to strip out
- */
-
-/**
- * The one and only main() method
+ * This is the runner function for the BST class
+ * It is in charge of handling user input/selection
+ * It also calculates time complexities
+ * @param string file path
  */
 void BinarySearchTree::runner(std::string path) {
 
-    // Define a timer variable
+    //Declare Variables
     clock_t ticks;
-
-    // Define a binary search tree to hold all bids
     BinarySearchTree* bst;
-    bst = new BinarySearchTree();
     Bid bid;
-
     int choice = 0;
+
+    bst = new BinarySearchTree();
+
     do {
+        //Ask the user for input
         choice = Utility::menuSelection();
+        Utility::clearTerm();
 
         switch (choice) {
-
+        //Load Bids
         case 1:
             
-            // Initialize a timer variable before loading bids
+            // Initialize a timer
             ticks = clock();
 
-            // Complete the method call to load the bids
             loadBids(path, bst);
 
-            // Calculate elapsed time and display result
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            // Calculate elapsed time
+            ticks = clock() - ticks;
             cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
             cin.get();
             
             break;
-
+        //Print All
         case 2:
             bst->InOrder();
             break;
-
+        //Find Bid
         case 3: {
+            //Ask user for BidId
             std::string bidKey;
             cout << "Enter Bid Key: ";
             std::cin >> bidKey;
 
+            // Initialize a timer
             ticks = clock();
 
             bid = bst->Search(bidKey);
 
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-
+            //Prints the bid
             if (!bid.bidId.empty()) {
                 Utility::displayBid(bid);
             } else {
             	cout << "Bid Id " << bidKey << " not found." << endl;
             }
 
+            // Calculate elapsed time
+            ticks = clock() - ticks;
             cout << "time: " << ticks << " clock ticks" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
 
             break;
             }
+        //Remove Bid
         case 4:
+            //Ask the user for BidId
             std::string bidKey;
             cout << "Enter Bid Key: ";
             std::cin >> bidKey;
+
             bst->Remove(bidKey);
+            
             break;
         }
     } while (choice != 0);
-
-    std::cout << "Good bye." << endl;
 }
-
-
-/* TO-DO */
-
-/*
-* DOCUMENTATION
-* 6. Excessive commenting
-* 7. not enough commenting in given code.
-*/

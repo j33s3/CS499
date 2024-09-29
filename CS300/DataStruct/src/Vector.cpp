@@ -5,7 +5,10 @@
 #include "../include/CSVparser.hpp"
 #include "../include/Vector.hpp"
 
-
+/**
+ * Handles loading bids into the Vector data Structure
+ * @param string, filepath 
+ */
 vector<Bid> Vector::loadBids(std::string path) {
     cout << "Loading Data from " << path << endl;
 
@@ -14,6 +17,7 @@ vector<Bid> Vector::loadBids(std::string path) {
     csv::Parser file = csv::Parser(path);
 
     try {
+        //Iterate through the contents of the file and add it to bid
         for (int i = 0; i < file.rowCount(); i++) {
             Bid bid;
             bid.bidId = file[i][1];
@@ -21,6 +25,7 @@ vector<Bid> Vector::loadBids(std::string path) {
             bid.fund = file[i][8];
             bid.amount = Utility::strToDouble(file[i][4], '$');
 
+            //Push the bid to the back of the vector
             bids.push_back(bid);
 
         }
@@ -33,42 +38,53 @@ vector<Bid> Vector::loadBids(std::string path) {
 //============================================================================
 // Merge-Sort Functions
 //============================================================================
+
+/**
+ * This merges two subarrays into a single array
+ * The left array = arr[left..mid]
+ * The right array = arr[mid + 1..right]
+ */
 void Vector::merge(std::vector<Bid>& arr, int left, int mid, int right) {
+    //Calculates the size of both array
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
+    //Declares the sub arrays
     std::vector<Bid> leftArr(n1);
     std::vector<Bid> rightArr(n2);
 
+    //Fill the left array
     for(int i = 0; i < n1; i++) {
         leftArr[i] = arr[left + i];
     }
+    //Fill the right array
     for(int i = 0; i < n2; i++) {
         rightArr[i] = arr[mid + 1 + i];
     }
 
-    int i = 0, j = 0, k = left;
-    while(i < n1 && j < n2) {
-        if(leftArr[i].bidId <= rightArr[j].bidId) {
-            arr[k] = leftArr[i];
-            i++;
+
+    int lIndex = 0, rIndex = 0, combIndex = left;
+    while(lIndex < n1 && rIndex < n2) {
+        if(leftArr[lIndex].bidId <= rightArr[rIndex].bidId) {
+            arr[combIndex] = leftArr[lIndex];
+            lIndex++;
         } else {
-            arr[k] = rightArr[j];
-            j++;
+            arr[combIndex] = rightArr[rIndex];
+            rIndex++;
         }
-        k++;
+        combIndex++;
     }
 
-    while(i < n1) {
-        arr[k] = leftArr[i];
-        i++;
-        k++;
+    while(lIndex < n1) {
+        arr[combIndex] = leftArr[lIndex];
+        lIndex++;
+        combIndex++;
     }
 
-    while(j < n2) {
-        arr[k] = rightArr[j];
-        j++;
-        k++;
+    while(rIndex < n2) {
+        arr[combIndex] = rightArr[rIndex];
+        rIndex++;
+        combIndex++;
     }
 }
 
@@ -155,34 +171,41 @@ void Vector::quickSort(std::vector<Bid>& arr, int low, int high) {
 
 
 
-
+/**
+ * This function is used for running the vector class
+ * It handles the menu selection as well as complexity tracking
+ */
 void Vector::runner(std::string path) {
-
-    // process command line arguments
+    // Declare variables
     clock_t ticks;
-
     vector<Bid> bids;
-
     int choice;
+
 
     do {
         choice = Utility::menuSelection();
+        Utility::clearTerm();
 
         switch (choice) {
+        //Load data
         case 1: {
+            //Initialize clock
             ticks = clock();
 
             bids = loadBids(path);
 
             cout << bids.size() << " bids read" << endl;
 
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+            //Save time complexity
+            ticks = clock() - ticks;
             cout << "time: " << ticks << " milliseconds" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
 
             break;
             }
+        //Print All
         case 2: {
+            //iterate through all indexes and print the bidId
             for(int i = 0; i < bids.size(); i++) {
                 Utility::displayBid(bids[i]);
             }
@@ -190,37 +213,50 @@ void Vector::runner(std::string path) {
 
             break;
         }
+        //Sort
         case 3: {
+            //Select sorting algorithm
             int selection = Utility::sortingSelection();
+            Utility::clearTerm();
+
+            //Initialize clock
             ticks = clock();
             switch(selection) {
-                case 1:
+                //Merge Sort
+                case 1: 
                     mergeSort(bids, 0, bids.size() - 1);
                     break;
+                //Heap Sort
                 case 2:
                     heapSort(bids);
                     break;
+                //Quick Sort
                 case 3:
                     quickSort(bids, 0, bids.size() - 1);
                     break;
             }
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
+
+            //Save time complexity
+            ticks = clock() - ticks;
             cout << "time: " << ticks << " milliseconds" << endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << endl << endl;
             
             break;
         }
+        //Find Bid
         case 4: {
+            //Ask user to enter a bidKey
             std::string bidKey;
             cout << "Enter Bid Key: ";
             std::cin >> bidKey;
 
+            //Initialize clock
             ticks = clock();
 
-            bool bidFound;
+            //will be set to true if the bid is found.
+            bool bidFound = false;
 
-            ticks = clock() - ticks; // current clock ticks minus starting clock ticks
-
+            //Iterate through vector and display bid if found
             for(int i = 0; i < bids.size(); i++) {
                 if(bids[i].bidId == bidKey) {
                     bidFound = true; 
@@ -228,21 +264,26 @@ void Vector::runner(std::string path) {
                     Utility::displayBid(bids[i]);
                 }
             }
+            //If bid is not found notify the user
             if(!bidFound) {
                 std::cout << "Unable to find bid" << std::endl;
             }
 
-
+            //Save Time complexity
+            ticks = clock() - ticks;
             cout << "time: " << ticks << " clock ticks" << std::endl;
-            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << std::endl;
+            cout << "time: " << ticks * 1.0 / CLOCKS_PER_SEC << " seconds" << std::endl << std::endl;
 
             break;
             }
+        //Remove Bid
         case 5:
+            //Ask the user for a bidId
             std::string bidKey;
             cout << "Enter Bid Key: ";
             std::cin >> bidKey;
 
+            //Iterate through the vector and remove index if match is found.
             vector<Bid>::iterator iterator = bids.begin();
             while(iterator != bids.end()) {
                 if(iterator->bidId == bidKey) {
@@ -257,7 +298,4 @@ void Vector::runner(std::string path) {
 
     
     } while (choice != 0);
-
-
-    std::cout << "Good bye." << std::endl;
 }
