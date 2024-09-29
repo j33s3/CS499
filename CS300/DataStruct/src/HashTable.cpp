@@ -133,22 +133,36 @@ void HashTable::PrintAll() {
 //============================================================================
 // Merge-Sort Functions
 //============================================================================
+
+/**
+ * This merges two subarrays into a single array
+ * The left array = arr[left..mid]
+ * The right array = arr[mid + 1..right]
+ */
 void HashTable::merge(Node** array, int left, int mid, int right) {
+    //Calculates the size of both array
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
+    //Declares the sub arrays
     Node** leftArray = new Node*[n1];
     Node** rightArray = new Node*[n2];
 
+    //Fill the left array
     for (int i = 0; i < n1; i++) {
         leftArray[i] = array[left + i];
     }
+
+    //Fill the right array
     for (int j = 0; j < n2; j++) {
         rightArray[j] = array[mid + 1 + j];
     }
 
+    //Initializes our left index, right index and combinded index
     int i = 0, j = 0, k = left;
     while (i < n1 && j < n2) {
+
+        //if the current value in left arr is less than right copy it to array
         if(leftArray[i]->bid.bidId < rightArray[j]->bid.bidId) {
             array[k++] = leftArray[i++];
         } else {
@@ -156,10 +170,12 @@ void HashTable::merge(Node** array, int left, int mid, int right) {
         }
     }
 
+    //Copy any remaining elements from leftArr[]
     while (i < n1) {
         array[k++] = leftArray[i++];
     }
 
+    //Copy and remaining element from rightArr[]
     while (j < n2) {
         array[k++] = rightArray[j++];
     }
@@ -169,43 +185,69 @@ void HashTable::merge(Node** array, int left, int mid, int right) {
 
 }
 
+/**
+ * @brief Main function for implementing merge sort on arr
+ * 
+ * @param arr
+ * @param left 
+ * @param right 
+ */
 void HashTable::mergeSort(Node** array, int left, int right) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
 
+    // base case, left index is greater than or equal to right return
+    if (left < right) {
+
+        //calculate the midpoint
+        int mid = left + (right - left) / 2;
+        // Sort first and second halves
         mergeSort(array, left, mid);
         mergeSort(array, mid + 1, right);
+        //Merge the two halves
         merge(array, left, mid, right);
     }
 }
+
 //============================================================================
 // Heap-Sort Functions
 //============================================================================
 
 void HashTable::heapify(Node** array, int n, int i) {
+    //initializes largest as the current root
     int largest = i;
+    //initializes index of left and right
     int left = 2 * i + 1;
     int right = 2 * i + 2;
 
+    //checks if left exists and if BidId is greater than largest
     if(left < n && array[left]->bid.bidId > array[largest]->bid.bidId) {
         largest = left;
     }
     
+    //checks if right exists and if BidId is greater than largest
     if(right < n && array[right]->bid.bidId > array[largest]->bid.bidId) {
         largest = right;
     }
 
+    //If largest is not the root node than swap it
     if (largest != i) {
         swap(array[i], array[largest]);
         heapify(array, n, largest);
     }
 }
 
+/**
+ * @brief Main function to perform heapSort
+ * 
+ * @param array 
+ * @param n 
+ */
 void HashTable::heapSort(Node** array, int n) {
+    //builds the max heap by moving from the largest to the end of the table
     for(int i = n/2 - 1; i >= 0; i--) {
         heapify(array, n, i);
     }
 
+    // Move the current root to the end of the table
     for(int i = n - 1; i > 0; i--) {
         swap(array[0], array[i]);
         heapify(array, i, 0);
@@ -215,11 +257,23 @@ void HashTable::heapSort(Node** array, int n) {
 //============================================================================
 // Quick-Sort Functions
 //============================================================================
+/**
+ * @brief It takes the last element as its pivot
+ * and places all elements smaller to the left and larger to the right
+ * 
+ * @param array 
+ * @param low 
+ * @param high 
+ * @return int 
+ */
 int HashTable::partition(Node** array, int low, int high) {
+    //Choose pivot
     Bid pivot = array[high]->bid;
     int i = (low - 1);
 
+    //Traverse the array from low to high
     for(int j = low; j < high; j++) {
+        //If the bidId is less than pivot than swap it
         if(array[j]->bid.bidId < pivot.bidId) {
             i++;
             swap(array[i], array[j]);
@@ -229,9 +283,19 @@ int HashTable::partition(Node** array, int low, int high) {
     return (i + 1);
 }
 
+/**
+ * @brief used to divide quicksort by partitioning then sorting
+ * 
+ * @param array 
+ * @param low 
+ * @param high 
+ */
 void HashTable::quickSort(Node** array, int low, int high) {
+    //Base case if there at least two items
     if (low < high) {
+        //Partition the array
         int pi = partition(array, low, high);
+        //Apply quick sort to the left and right partitions
         quickSort(array, low, pi - 1);
         quickSort(array, pi + 1, high);
     }

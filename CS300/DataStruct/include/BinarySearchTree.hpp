@@ -34,13 +34,13 @@ class BinarySearchTree {
         Node* RemoveNode(Node* node, string bidId);
 
         std::string menu =  "Please select an option:\n"
-                            "------------------------\n"
+                            "========================\n"
                             "* Load Bids        - 1 *\n"
                             "* Display All Bids - 2 *\n"
                             "* Find Bid         - 3 *\n"
                             "* Remove Bid       - 4 *\n"
                             "* Exit             - 0 *\n"
-                            "------------------------\n"
+                            "========================\n"
                             "Enter a number: ";
 
     public:

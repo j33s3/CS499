@@ -62,9 +62,12 @@ void Vector::merge(std::vector<Bid>& arr, int left, int mid, int right) {
         rightArr[i] = arr[mid + 1 + i];
     }
 
-
+    // Initializes our left index, right index and combined index
     int lIndex = 0, rIndex = 0, combIndex = left;
+    //While neither indexes have reached the end of a sub array
     while(lIndex < n1 && rIndex < n2) {
+
+        //if the current value in left arr is less than right copy it to array
         if(leftArr[lIndex].bidId <= rightArr[rIndex].bidId) {
             arr[combIndex] = leftArr[lIndex];
             lIndex++;
@@ -75,12 +78,14 @@ void Vector::merge(std::vector<Bid>& arr, int left, int mid, int right) {
         combIndex++;
     }
 
+    //Copy any remaining elements from leftArr[] 
     while(lIndex < n1) {
         arr[combIndex] = leftArr[lIndex];
         lIndex++;
         combIndex++;
     }
 
+    //Copy and remaining elements from rightArr[]
     while(rIndex < n2) {
         arr[combIndex] = rightArr[rIndex];
         rIndex++;
@@ -88,14 +93,25 @@ void Vector::merge(std::vector<Bid>& arr, int left, int mid, int right) {
     }
 }
 
+/**
+ * @brief Main function for implementing merge sort on arr
+ * 
+ * @param arr
+ * @param left 
+ * @param right 
+ */
 void Vector::mergeSort(std::vector<Bid>& arr, int left, int right) {
+    // base case, left index is greater than or equal to right return
     if (left >= right) {
         return;
     }
 
+    //calculate the midpoint
     int mid = left + (right - left) / 2;
+    // sort first and second halves
     mergeSort(arr, left, mid);
     mergeSort(arr, mid + 1, right);
+    //merge the two halves
     merge(arr, left, mid, right);
 }
 
@@ -104,31 +120,43 @@ void Vector::mergeSort(std::vector<Bid>& arr, int left, int right) {
 // Heap-Sort Functions
 //============================================================================
 void Vector::heapify(std::vector<Bid>& arr, int n, int i) {
+    //initializes largest as the current root
     int largest = i;
+    //initializes index of left and right
     int left = 2 * i + 1;
     int right = 2 * i + 2;
 
+    //checks if leftexists and if the bidId is greater than largest
     if (left < n && arr[left].bidId > arr[largest].bidId) {
         largest = left;
     }
 
+    //checks if right exists and if the bidId is greater than left
     if (right < n && arr[right].bidId > arr[left].bidId) {
         largest = right;
     }
 
+    //if largest is not the root node than swap it 
     if (largest != i) {
         std::swap(arr[i], arr[largest]);
         heapify(arr, n, largest);
     }
 }
 
+/**
+ * @brief Main function to perform heapSort
+ * 
+ * @param arr 
+ */
 void Vector::heapSort(std::vector<Bid>& arr) {
     int n = arr.size();
 
+    // Build the max heap by moving from the largest to the end of the vector
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(arr, n , i);
     }
 
+    // Move the current root to the end of the vector
     for(int i = n - 1; i > 0; i--) {
         std::swap(arr[0], arr[i]);
         heapify(arr, i, 0);
@@ -139,11 +167,24 @@ void Vector::heapSort(std::vector<Bid>& arr) {
 //============================================================================
 // Quick-Sort Functions
 //==========================================================================
+
+/**
+ * @brief it takes the last element as its pivot 
+ * and places all elements smaller to the left and larger to the right.
+ * 
+ * @param arr 
+ * @param low 
+ * @param high 
+ * @return int 
+ */
 int Vector::partition(std::vector<Bid>& arr, int low, int high) {
+    //choose the pivot
     string pivot = arr[high].bidId;
     int i = low - 1;
 
+    //Traverse the array from low to high
     for(int j = low; j < high; j++) {
+        //if the bidId is less than pivot than swap it
         if (arr[j].bidId < pivot) {
             i++;
             std::swap(arr[i], arr[j]);
@@ -153,10 +194,19 @@ int Vector::partition(std::vector<Bid>& arr, int low, int high) {
     return i + 1;
 }
 
+/**
+ * @brief Used to divide quicksort by partitioning then sorting
+ * 
+ * @param arr 
+ * @param low 
+ * @param high 
+ */
 void Vector::quickSort(std::vector<Bid>& arr, int low, int high) {
+    //Base Case if there at least two items
     if (low < high) {
+            //partition the array
             int pi = partition(arr, low, high);
-
+            //apply quick sort to the left and right partitions
             quickSort(arr, low, pi - 1);
             quickSort(arr, pi + 1, high);
     }

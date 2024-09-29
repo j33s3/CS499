@@ -45,26 +45,45 @@ LinkedList::~LinkedList() {
 
 //https://www.geeksforgeeks.org/merge-sort-for-linked-list/
 
+/**
+ * @brief splits the linked list into two halves
+ * It returns the start of the second half
+ * 
+ * @param node 
+ * @return LinkedList::Node* 
+ */
 LinkedList::Node* LinkedList::split(Node* node) {
+    // Initialize two pointers: fast moves two steps and slow, one step
     Node* fast = node;
     Node* slow = node;
 
+    //itterate through the array and split the list
     while (fast != nullptr && fast->next != nullptr) {
         fast = fast->next->next;
         if(fast != nullptr) {
             slow = slow->next;
         }
     }
+    //Splits the list by breaking it at the midpoint
     Node* temp = slow->next;
     slow->next = nullptr;
     return temp;
 
 }
 
+/**
+ * @brief Merges two sorted linked lists
+ * 
+ * @param first 
+ * @param second 
+ * @return LinkedList::Node* 
+ */
 LinkedList::Node* LinkedList::merge(Node* first, Node* second) {
+    //Base case: 
     if(first == nullptr) return second;
     if(second == nullptr) return first;
 
+    //Compare the bidIds of both first annd second nodes
     if(first->bid.bidId < second->bid.bidId) {
         
         first->next = merge(first->next, second);
@@ -78,16 +97,26 @@ LinkedList::Node* LinkedList::merge(Node* first, Node* second) {
     }
 }
 
+/**
+ * @brief This is the main function for the mergeSort algorithm
+ * 
+ * @param node 
+ * @return LinkedList::Node* 
+ */
 LinkedList::Node* LinkedList::mergeSort(Node* node) {
+    //Base case: if either nod eis null
     if(node == nullptr || node->next == nullptr) {
         return node;
     }
 
+    //split the list into halves
     Node* second = split(node);
 
+    //recursively sort the first and second halves
     node = mergeSort(node);
     second = mergeSort(second);
 
+    //Merge two sorted arrays together
     return merge(node, second);
 }
 
@@ -98,13 +127,18 @@ LinkedList::Node* LinkedList::mergeSort(Node* node) {
 //https://www.geeksforgeeks.org/heap-sort-for-linked-list/
 
 void LinkedList::heapify(Node** array, int n, int i) {
+    //Initializes largest as the current root
     int largest = i;
+    //Initializes index of left and right
     int left = 2 * i + 1;
     int right = 2 * i + 2;
 
+    //Checks if left exists and if the bidId is greater than largest
     if(left < n && array[left]->bid.bidId > array[largest]->bid.bidId) largest = left;
+    //Checks if right exists and if the bidId is greater than largest
     if(right < n && array[right]->bid.bidId > array[largest]->bid.bidId) largest = right;
 
+    //if largest is not the root node than swap it
     if(largest != i) {
         swap(array[i], array[largest]);
         heapify(array, n, largest);
@@ -112,24 +146,30 @@ void LinkedList::heapify(Node** array, int n, int i) {
 }
 
 LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
+    //if the linked list is empty return nullptr
     if (!node) return nullptr;
-
+        
+    //creates a new array of pointers to stor linked list nodes
     int n = size;
     Node** array = new Node*[n];
 
+    //copy nodes into array
     Node* curr = node;
     for(int i = 0; i < n; i++) {
         array[i] = curr;
         curr = curr->next;
     }
 
+    //build max heap by calling heapify
     for(int i = n / 2 - 1; i >= 0; i--) heapify(array, n, i);
 
+    //extract elements from the heap
     for(int i = n - 1; i > 0; i--) {
         swap(array[0], array[i]);
         heapify(array, i, 0);
     }
 
+    //Rebuild the linked list from the sorted array
     node = array[0];
     Node* sortedCurr = node;
     for (int i = 1; i < n; i++) {
@@ -138,6 +178,7 @@ LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
     }
     sortedCurr->next = nullptr;
 
+    //store the address to the new head and return
     Node* newHead = array[0];
 
     delete[] array;
@@ -148,19 +189,33 @@ LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
 //============================================================================
 // Quick-Sort Functions
 //============================================================================
-
+    /**
+     * @brief It takes the last element as it pivot
+     * and places all elements smaller to the left and larger to the right
+     * 
+     * @param head 
+     * @param end 
+     * @param newHead 
+     * @param newEnd 
+     * @return LinkedList::Node* 
+     */
     LinkedList::Node* LinkedList::partition(Node* head, Node* end, Node** newHead, Node** newEnd) {
+        //Choose the pivot
         Node* pivot = end;
         Node* prev = nullptr, *curr = head, *tail = pivot;
 
+        // Traverse the list from the head to pivot
         while (curr != pivot) {
+            //if the current is smaller than pivot
             if(curr->bid.bidId < pivot->bid.bidId) {
+                //set current to newHead
                 if(*newHead == nullptr) {
                     *newHead = curr;
                 }
                 prev = curr;
                 curr = curr->next;
             } else {
+                //If greater than pivot moves it to the end of the list
                 if(prev) prev->next = curr->next;
                 Node* tmp = curr->next;
                 curr->next = nullptr;
@@ -170,6 +225,7 @@ LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
             }
         }
 
+        //newHead is not set, the pivot is the smallest
         if (*newHead == nullptr) *newHead = pivot;
         *newEnd = tail;
 
@@ -177,13 +233,24 @@ LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
 
     }
 
-
+    /**
+     * @brief recursively sorts the array
+     * 
+     * @param head 
+     * @param end 
+     * @return LinkedList::Node* 
+     */
     LinkedList::Node* LinkedList::quickSort(Node* head, Node* end) {
+        //Base Case, if the list is empty
         if(!head || head == end) return head;
 
+        // initialize the new head and new end
         Node* newHead = nullptr, *newEnd = nullptr;
+
+        //initialize the pivot as a partition
         Node* pivot = partition(head, end, &newHead, &newEnd);
 
+        //if the new head is not the pivot then sort the left partition
         if (newHead != pivot) {
             Node* tmp = newHead;
             while (tmp->next != pivot) tmp = tmp->next;
@@ -200,7 +267,14 @@ LinkedList::Node* LinkedList::heapSort(Node* node, int size) {
         return newHead;
     }
 
+    /**
+     * @brief Utility function for finding tail
+     * 
+     * @param cur 
+     * @return LinkedList::Node* 
+     */
     LinkedList::Node* LinkedList::getTail(Node* cur) {
+        //Iterates to the end and returns tail node.
         while(cur != nullptr && cur->next != nullptr) {
             cur = cur->next;
         }
