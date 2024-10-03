@@ -5,7 +5,6 @@ export const createConnection = async () => {
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
     });
 
     console.log('Connected to MySQL');
@@ -22,8 +21,7 @@ export const createConnection = async () => {
         truck_make VARCHAR(255) NOT NULL,
         truck_year INT,
         start_location VARCHAR(255),
-        end_location VARCHAR(255),
-        distance FLOAT
+        end_location VARCHAR(255)
         );
     `;
     await connection.query(createTableQuery);

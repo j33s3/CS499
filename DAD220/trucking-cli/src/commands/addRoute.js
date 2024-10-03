@@ -1,4 +1,4 @@
-import { validateDriverName, validateTruckYear } from '../utils/validation.js';
+import { validateDriverName, validateTruckModel, validateTruckMake, validateTruckYear, validateStartingZIP, validateFinalZIP } from '../utils/validation.js';
 
 import { Command } from 'commander';
 import { input } from '@inquirer/prompts';
@@ -17,18 +17,58 @@ const addRouteCommand = new Command('add-route')
                 message: 'Enter driver name:',
                 validate: validateDriverName
             });
-            const truck_model = await input({message: 'Enter truck model:'});
-            const truck_make = await input({message: 'Enter truck make:'});
-            const truck_year = await input({message: 'Enter truck year:'});
-            const start_location = await input({message: 'Enter start location'});
-            const end_location = await input({message: 'Enter end location'});
-            const distance = await input({message: 'Enter approximate distance (mi)'})
 
-            const query =  `INSERT INTO routes (driver, truck_model, truck_make, truck_year, start_location, end_location, distance) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?)`;
+            const truck_model = await input ({
+                message: 'Enter truck model:',
+                validate: validateTruckModel
+            });
+
+            const truck_make = await input ({
+                message: 'Enter truck make:',
+                validate: validateTruckMake
+            });
+
+            const truck_year = await input ({
+                message: 'Enter truck year:',
+                validate: validateTruckYear
+            });
+
+
+
+            const startZIP = await input ({
+                message: 'Enter start ZIP code:',
+                validate: async (input) => {
+                    const result = await validateStartingZIP(input);
+                    if(result && result.includes('invalid')) {
+                        return result
+                    }
+                    return true;
+                }
+            });
+
+            const endZIP = await input ({
+                message: 'Enter end ZIP code:',
+                validate: async (input) => {
+                    const result = await validateFinalZIP(input, startZIP);
+                    if (result && result.includes('invalid')) {
+                        return result;
+                    }
+                    return true;
+                }
+            });
+
+
+            const start_location = await validateStartingZIP(startZIP);
+            const end_location = await validateFinalZIP(endZIP, startZIP);
+
+
+
+
+            const query =  `INSERT INTO routes (driver, truck_model, truck_make, truck_year, start_location, end_location) 
+                            VALUES (?, ?, ?, ?, ?, ?)`;
 
             await connection.query(query, [
-                driver, truck_model, truck_make, truck_year, start_location, end_location, distance
+                driver, truck_model, truck_make.toUpperCase, truck_year, start_location, end_location
             ]);
 
             console.log('Route added successfully');

@@ -8,11 +8,13 @@ const viewRoutesCommand = new Command('view-routes');
 viewRoutesCommand
     .description('View all trucking routes (Admin only)')
     .action(async () => {
-        const { role } = await input({ message: 'Enter your role (user/Admin):' });
+        const connection = await createConnection();
+
+        const role  = await input({ message: 'Enter your role (user/Admin):' });
 
         if (role.toLowerCase() === 'admin') {
             try {
-                const connection = await createConnection();
+
                 const [results] = await connection.query('SELECT * FROM routes');
 
                 console.table(results);
