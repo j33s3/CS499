@@ -1,3 +1,5 @@
+import { validateDriverName, validateTruckYear } from '../utils/validation.js';
+
 import { Command } from 'commander';
 import { input } from '@inquirer/prompts';
 import { createConnection } from '../../config/dbConfig.js';
@@ -11,7 +13,10 @@ const addRouteCommand = new Command('add-route')
         try {
             const connection = await createConnection();
 
-            const driver = await input({message: 'Enter driver name:'});
+            const driver = await input ({
+                message: 'Enter driver name:',
+                validate: validateDriverName
+            });
             const truck_model = await input({message: 'Enter truck model:'});
             const truck_make = await input({message: 'Enter truck make:'});
             const truck_year = await input({message: 'Enter truck year:'});
