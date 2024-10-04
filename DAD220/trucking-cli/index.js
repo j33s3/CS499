@@ -35,6 +35,6 @@ program.addCommand(deleteRouteCommand);
         console.error('Error connecting to MySQL', err);
         process.exit(1);
     }
-})();
+});
 
 program.parse(process.argv);

@@ -1,4 +1,5 @@
 import { validateDriverName, validateTruckModel, validateTruckMake, validateTruckYear, validateStartingZIP, validateFinalZIP } from '../utils/validation.js';
+import { getLocation } from '../utils/helperFunctions.js';
 
 import { Command } from 'commander';
 import { input } from '@inquirer/prompts';
@@ -34,23 +35,18 @@ const addRouteCommand = new Command('add-route')
             });
 
 
-
             const startZIP = await input ({
                 message: 'Enter start ZIP code:',
-                validate: async (input) => {
-                    const result = await validateStartingZIP(input);
-                    if(result && result.includes('invalid')) {
-                        return result
-                    }
-                    return true;
-                }
+                validate: await validateStartingZIP
             });
+
+
 
             const endZIP = await input ({
                 message: 'Enter end ZIP code:',
                 validate: async (input) => {
                     const result = await validateFinalZIP(input, startZIP);
-                    if (result && result.includes('invalid')) {
+                    if(result !== true) {
                         return result;
                     }
                     return true;
@@ -58,17 +54,15 @@ const addRouteCommand = new Command('add-route')
             });
 
 
-            const start_location = await validateStartingZIP(startZIP);
-            const end_location = await validateFinalZIP(endZIP, startZIP);
+            const start_location = await getLocation(startZIP);
 
-
-
+            const end_location = await getLocation(endZIP);
 
             const query =  `INSERT INTO routes (driver, truck_model, truck_make, truck_year, start_location, end_location) 
                             VALUES (?, ?, ?, ?, ?, ?)`;
 
             await connection.query(query, [
-                driver, truck_model, truck_make.toUpperCase, truck_year, start_location, end_location
+                driver, truck_model, truck_make.toUpperCase(), truck_year, start_location, end_location
             ]);
 
             console.log('Route added successfully');

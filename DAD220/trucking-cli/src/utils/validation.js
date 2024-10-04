@@ -41,7 +41,7 @@ export function validateTruckMake(make) {
 export function validateTruckYear(year) {
     const currentYear = new Date().getFullYear();
     if(isNaN(year) || year < 1900 || year > (currentYear + 1)) {
-        return `Truck year must be between 1900 and ${currentYear + 1}`
+        return `Truck year must be between 1900 and ${currentYear + 1}`;
     }
     return true;
 }
@@ -50,52 +50,38 @@ export async function validateStartingZIP(startZIP) {
     const url = `https://api.zippopotam.us/us/${startZIP}`;
 
     try {
-        const response = axios.get(url);
-        const { places } = response.data;
 
-        if (response.status !== 200) {
-            return 'Zipcode is invalid';
+        const response = await axios.get(url);
+
+        if(response.status === 200 && response.data.places && response.data.places.length > 0) {
+            return true;
+        } else {
+            return "invalid zipcode";
         }
-
-        const place = places[0];
-        const city = place['place name'];
-        const state = place['state abbreviation'];
-
-        const fullAddress = `${city}, ${state} ${startZIP}`;
-
+        
     } catch (error) {
-        return ('Error or invalid zipcode', error.response?.status);
-    }
-
-    return fullAddress;
-
+        return "invalid zipcode";
+    }   
 }
 
-export async function validateFinalZIP(endZip, startZIP) {
-    if(startZIP === endZip) {
+export async function validateFinalZIP(endZIP, startZIP) {
+    const url = `https://api.zippopotam.us/us/${endZIP}`;
+    if(startZIP === endZIP) {
         return 'Error: Start and End locations are the same';
     }
 
-    const url = `https://api.zippopotam.us/us/${endZip}`;
-
     try {
-        const response = axios.get(url);
-        const { places } = response.data;
 
-        if (response.status !== 200) {
-            return 'Zipcode is invalid';
+        const response = await axios.get(url);
+
+        if(response.status === 200 && response.data.places && response.data.places.length > 0) {
+            return true;
+        } else {
+            return "invalid zipcode";
         }
 
-        const place = places[0];
-        const city = place['place name'];
-        const state = place['state abbreviation'];
-
-        const fullAddress = `${city}, ${state} ${endZIP}`;
-
     } catch (error) {
-        return ('Error or invalid zipcode', error.response?.status);
+        return "invalid zipcode";
     }
-
-    return fullAddress;
 }
 
