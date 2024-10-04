@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+export const listModels = ['VOLVO', 'FREIGHTLINER', 'KENWORTH', 'PETERBILT', 'INTERNATIONAL', 'WESTERN STAR', 'MACK', 'SCANIA', 'MAN', 'IVECO', 'STERLING', 'ISUZU'];
 
 export async function validateDriverName(name) {
     const validChars = /^[A-Za-z\s\-]+$/;
@@ -31,7 +32,6 @@ export function validateTruckModel(model) {
 }
 
 export function validateTruckMake(make) {
-    const listModels = ['VOLVO', 'FREIGHTLINER', 'KENWORTH', 'PETERBILT', 'INTERNATIONAL', 'WESTERN STAR', 'MACK', 'SCANIA', 'MAN', 'IVECO', 'STERLING', 'ISUZU'];
     if (!listModels.includes(make.toUpperCase())){
         return 'Truck manufacturer is not valid.';
     }
@@ -83,5 +83,24 @@ export async function validateFinalZIP(endZIP, startZIP) {
     } catch (error) {
         return "invalid zipcode";
     }
+}
+
+
+export async function validateIndexRemoval(index) {
+    const validChars = /^[0-9]+$/;
+    if(!index.match(validChars)){
+        return 'Invalid index format';
+    }
+    return true;
+}
+
+export async function validateSearch(search) {
+    const forbiddenChars = /['";\(\)\{\}\[\]\<\>\|&!~`\\\/@#\$%\^*\+=]|--/;
+
+    if(forbiddenChars.test(search)) {
+        return 'Invalid characters in the search'
+    }
+    return true;
+
 }
 

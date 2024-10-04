@@ -5,14 +5,13 @@ import { Command } from 'commander';
 import { input } from '@inquirer/prompts';
 import { createConnection } from '../../config/dbConfig.js';
 
-const program = new Command();
-
 
 const addRouteCommand = new Command('add-route')
     .description('Add a new trucking route')
     .action(async () => {
+        const connection = await createConnection();
+
         try {
-            const connection = await createConnection();
 
             const driver = await input ({
                 message: 'Enter driver name:',
@@ -68,6 +67,9 @@ const addRouteCommand = new Command('add-route')
             console.log('Route added successfully');
         } catch (error) {
             console.error('Error:', error);
+        } finally {
+            await connection.end();
+            process.exit(0);
         }
     });
 

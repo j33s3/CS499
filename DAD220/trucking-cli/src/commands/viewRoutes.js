@@ -1,6 +1,6 @@
-import { Command } from'commander';
-import { input } from'@inquirer/prompts';
-import { createConnection } from'../../config/dbConfig.js';
+import { Command } from 'commander';
+import { input } from '@inquirer/prompts';
+import { createConnection } from '../../config/dbConfig.js';
 
 
 const viewRoutesCommand = new Command('view-routes');
@@ -10,8 +10,8 @@ viewRoutesCommand
     .action(async () => {
         const connection = await createConnection();
 
-        const role  = await input({ message: 'Enter your role (user/Admin):' });
-
+        const role = await input({ message: 'Enter your role (user/Admin):' });
+        
         if (role.toLowerCase() === 'admin') {
             try {
 
@@ -21,6 +21,9 @@ viewRoutesCommand
                 await connection.end(); // Close the connection
             } catch (err) {
                 console.error('Error retrieving routes:', err);
+            } finally {
+                await connection.end();
+                process.exit(0);
             }
         } else {
             console.log('Access denied. Admins only.');
