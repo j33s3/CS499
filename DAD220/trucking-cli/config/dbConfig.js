@@ -1,6 +1,13 @@
 import mysql from'mysql2/promise';
 
+
+/** rerurns the connection to the database
+ * 
+ * @returns mysql.connection
+ */
 export const createConnection = async () => {
+    
+    //creates the connection with the folowing env variables
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
@@ -9,9 +16,11 @@ export const createConnection = async () => {
 
     console.log('Connected to MySQL');
 
+    // sends a query to create the database if it does not exist
     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${process.env.DB_NAME}\``);
     console.log('Database checked/created successfully');
 
+    // connects to the the database and ensures the collection is present
     await connection.changeUser({ database: process.env.DB_NAME});
     const createTableQuery = `
     CREATE TABLE IF NOT EXISTS routes (
