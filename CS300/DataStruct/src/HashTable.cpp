@@ -1,11 +1,12 @@
 //============================================================================
 // Name        : HashTable.cpp
-// Author      : John Watson
+// Author      : Jesse Peterson
 // Version     : 1.0
 // Copyright   : Copyright © 2017 SNHU COCE
-// Description : Hello World in C++, Ansnode-style
+// Description : Hash Table lab
 //============================================================================
 #include <climits>
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <time.h>
@@ -41,8 +42,17 @@ HashTable::HashTable(unsigned int size) {
  * Destructor
  */
 HashTable::~HashTable() {
-    nodes.erase(nodes.begin());
+    for (auto& head : nodes) {
+        Node* current = head;
 
+        while(current != nullptr) {
+            Node* temp = current;
+            current = current->next;
+            delete temp; 
+        }
+    }
+
+    nodes.clear();
 }
 
 /**
@@ -365,7 +375,7 @@ void HashTable::Remove(string bidId) {
 
             //set node to next value
             if(node->next == nullptr) {
-                nodes[key] = new Node();
+                nodes[key] = nullptr;
             } else {
                 nodes[key] = node->next;
             }
@@ -385,7 +395,7 @@ void HashTable::Remove(string bidId) {
             if(node->bid.bidId == bidId) {
                 //unlink node pointer
                 if(node->next == nullptr) {
-                    prev->next = new Node();
+                    prev->next = nullptr;
                 } else {
                     prev->next = node->next;
                 }
@@ -566,5 +576,4 @@ void HashTable::runner(std::string path) {
         }
         
     } while (choice != 0);
-
 }

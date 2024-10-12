@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : LinkedList.cpp
-// Author      : Your Name
+// Author      : Jesse
 // Version     : 1.0
 // Copyright   : Copyright © 2017 SNHU COCE
 // Description : Lab 3-3 Lists and Searching
