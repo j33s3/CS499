@@ -1,0 +1,5 @@
+Welcome to the trucking_cli client
+
+This program is used for storing information about our logistics system.
+More specifically, this program stores the people, trucks, and routes they take.
+This data is stored to a MySQL database where admins can view, delete, and search the data.
