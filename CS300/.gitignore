@@ -1,0 +1,11 @@
+#vscode files
+*.vscode
+
+
+#LaTeX Files
+SummaryOfDatastructures.aux
+SummaryOfDatastructures.log
+SummaryOfDatastructures.synctex.gz
+
+#Build
+/DataStruct/build
