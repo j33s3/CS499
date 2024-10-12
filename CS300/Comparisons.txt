@@ -1,0 +1,43 @@
+This will be transfered into a more graphical comparison when placed into the ePortfolio
+
+
+1. Merge Sort
+    Vector
+        0.0827 Seconds
+        0.082  Seconds
+        0.0823 Seconds
+    LinkedList
+        0.0079 Seconds
+        0.0077 Seconds
+        0.0064 Seconds
+    HashTable
+        0.0037 Seconds
+        0.0043 Seconds
+        0.0047 Seconds
+2. Heap Sort
+    Vector
+        0.1044 Seconds
+        0.1038 Seconds
+        0.1113 Seconds
+    LinkedList
+        0.0155 Seconds
+        0.0104 Seconds
+        0.01   seconds
+    HashTable
+        0.0045 Seconds
+        0.0049 Seconds
+        0.0052 Seconds
+3. Quick Sort
+    Vector
+        0.078  Seconds
+        0.0824 Seconds
+        0.0763 Seconds
+    LinkedList
+        0.0073 Seconds
+        0.0094 Seconds
+        0.009  Seconds
+    HashTable
+        0.0067 Seconds
+        0.0059 Seconds
+        0.0054 Seconds
+

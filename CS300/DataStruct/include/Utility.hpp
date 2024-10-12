@@ -13,6 +13,7 @@ namespace Utility {
     double strToDouble(std::string str, char ch);
     void displayBid(Bid bid);
     int menuSelection();
+    int sortingSelection();
     void clearTerm();
 }
 

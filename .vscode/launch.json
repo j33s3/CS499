@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/jessepeterson/Code/CS499/CS499/CS300/DataStruct/src",
+      "program": "/Users/jessepeterson/Code/CS499/CS499/CS300/DataStruct/src/build/Debug/outDebug"
+    }
+  ]
+}
