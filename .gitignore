@@ -1,9 +1,11 @@
 /cachedfiles
 
-/CS300/DataStruct/build
+/DSA_Lab/DataStruct/build
 
 *.vscode
 
 *.zip
 
 /cachedfiles
+
+/Trucking_Database/trucking_cli/.env
