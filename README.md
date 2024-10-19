@@ -1,2 +1,18 @@
 # CS499
 Capstone project in CS499 at SNHU
+
+## IMS_App - Software Engineering : from CS360
+&emsp; This Android application features a user login with basic authentication. The app users SQLite to track users and inventory. Once signed in, can add, subtract or remove inventory items. When users select add item, it will bring up a screen for entering an item name and quantity.<br><br>
+&emsp; This app also features SMS notifications when an item reaches a specified quantity. Optionally, Users can receive notifications when an item is deleted as well. Lastly, the app features two themes, light and dark mode.<br><br>
+&emsp; This app was originally created in my CS360 class in August 2024. I chose to incorporate this as a part of my capstone because it showcases my ability to work in UI/UX, it also shows my ability to work in mobile development in software engineering. When working through this application, I learned how to create universal themes in an android app, I also learned how to store and handle user settings. 
+
+## DSA_Lab - DataStructures and Algorithms : from CS300
+&emsp; This lab consisted of three data structures, Vectors, Linked Lists, and Hash Tables. Each data structure was populated with 12,000 different documents from a .CSV file. Three different sorting algorithms were tested on each data structure, Merge, Heap, and quick sort.<br><br>
+&emsp; The consensus for the fastest data structure to sort was the Hash Table in all trials. The fastest algorithm for sorting was a mix between the merge and quick sorts. With the merge sort performing fastest on the Linked List and Hash Tables.<br><br>
+&emsp; The concepts of this lab were originally learned in CS300 back in February 2024. I decided That the work performed on these Data Structures was not satisfactory enough; I wanted to study them more. I chose to add this in my capstone to get more practice with DSA but also to showcase my abilities to work with different data structures and incorporate sorting algorithms for them. Through these tests I learned just how complex this topic can get, especially when constructing the data structures, as in this project. 
+
+## Trucking_Database - Databases : from DAD220
+
+&emsp; This application is a Command Line Interface for interacting with a MySQL database. The operations available to the user are adding, viewing, and deleting documents. The documents hold information like the truck driver ID, name, truck make/model/year, and their beginning and destination locations.<br><br>
+&emsp; This program runs using Node.js and uses the commander for the addition of new commands. Then the @inquirer/prompts package is used for interacting with the user while retrieving information. It is also used to validate the incoming information, ensuring no malicious data is being passed.<br><br>
+&emsp; The concepts of this lab were originally introduced to me in my DAD220 class in September 2023. The work in that class was merely working with MySQL using the terminal interface. I wanted to learn how to manage a MySQL database using a programming language. I chose to incorporate this project in my capstone to learn more about MySQL and Node.js. This enhancement showcases my ability to work with database and even to enforce security measures that prevent SQL Injection attacks. During my development of this project I learned how to read JSON data from an API, use libraries for executing commands, receiving user input, and limiting characters. I encounter many issues when trying to extract city, and state info from a zip code. I finally found the issue that was due to the asynchronous functionality of JavaScript. 
