@@ -8,4 +8,4 @@
 
 /cachedfiles
 
-/Trucking_Database/trucking_cli/.env
+*.env
